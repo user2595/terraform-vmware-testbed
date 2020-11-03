@@ -1,8 +1,8 @@
 #########################################################################
 ######### Provider#######################################################
 #########################################################################
-variable "vsphere_user"                         {default= "dai\\moussa"}
-variable "vsphere_password"                     {default= "Sonne21§"}
+variable "vsphere_user"                         {}//default= "dai\\moussa"}
+variable "vsphere_password"                     {}
 variable "vsphere_server"                       {default="vcenter.dai-lab.de"}
 # If you have a self-signed cert
 variable "vsphere_unverified_ssl"               {default= true }
