@@ -1,9 +1,9 @@
 provider "vsphere" {
-  //version ="1.15.0"
+  
   user           = var.vsphere_user
   password       = var.vsphere_password
   vsphere_server = var.vsphere_server
-
+  version         =var.vsphere_version
   # If you have a self-signed cert
   allow_unverified_ssl = var.vsphere_unverified_ssl
   #solve ServerFaultCode: Request version 'urn:pbm/' and namespace 'urn:pbm' are not supported
