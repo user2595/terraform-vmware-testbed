@@ -1,3 +1,10 @@
+# ---> Ansible
+*.retry
+.*.swp
+*.vault_pass
+
+
+
 # Local .terraform directories
 **/.terraform/*
 

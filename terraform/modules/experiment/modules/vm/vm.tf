@@ -19,7 +19,10 @@ resource "vsphere_virtual_machine" "vm" {
   scsi_type = data.vsphere_virtual_machine.template.scsi_type
 
 
-dynamic "network_interface" {
+
+
+
+  dynamic "network_interface" {
     # Include this block only if var.out_attack is
     # set to a non-null value.
     for_each = var.attack_network[*]
@@ -35,15 +38,7 @@ dynamic "network_interface" {
       network_id = network_interface.value
     }
   }
-  dynamic "network_interface" {
-    # Include this block only if var.out_attack is
-    # set to a non-null value.
-    for_each = var.control_network[*]
-    content {
-      network_id = network_interface.value
-    }
-  }
-  dynamic "network_interface" {
+    dynamic "network_interface" {
     # Include this block only if var.out_attack is
     # set to a non-null value.
     for_each = var.out_control[*]

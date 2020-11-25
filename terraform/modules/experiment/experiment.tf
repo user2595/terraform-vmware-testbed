@@ -16,6 +16,7 @@ module "network" {
   host                = local.host                  
 }
 module "vms" {
+  //depends_on = [module.network]
   source              = "./modules/vm"
   count               = length(var.experiment.maschinen)
   config              = var.config
@@ -23,6 +24,7 @@ module "vms" {
   host                = local.host 
   template            = var.experiment.maschinen[count.index].template         
   folder              = local.folder
+  username            = var.experiment.maschinen[count.index].username
   //network flages
   out_attack          = (var.experiment.maschinen[count.index].out_attack ? var.experiment.out_attack: null )
   out_control         = (var.experiment.maschinen[count.index].out_control ? var.experiment.out_control: null )

@@ -4,6 +4,7 @@ variable "config"           {}
 variable "name"             {}
 variable "host"             {}
 variable "folder"           {}
+variable "username"         {}
 variable "control_network"   {
     type    = string 
     default = null                               
