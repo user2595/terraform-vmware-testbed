@@ -1,44 +1,34 @@
+data "vsphere_host" "host" {
+  name          = var.experiment.host
+  datacenter_id = var.config.datacenter
+}
 resource "vsphere_folder" "folder" {
-  path                = "${local.path_prefix}/${var.name}" #/DAI-labore/vm/CCs/SEC     /Testbed
+  path                = "${local.path_prefix}/${var.experiment.name}" #/DAI-labore/vm/CCs/SEC     /Testbed
   type                = "vm"
   datacenter_id       = var.config.datacenter
 }
 module "network" {
   source              = "./modules/network"
+  attack_flag         = (var.experiment.creat_attack_network ? 1 : 0 )
+  control_flag        = (var.experiment.creat_control_network ? 1 : 0 )
   config              = var.config
-  name                = var.name
-  host                = var.host
-  network_public      = var.network_public
-  
+  name                = var.experiment.name
+  host                = local.host                  
 }
-module "dhcp_server" {
-  source = "./modules/targets"
-    config              = var.config
-    name                = var.name
-    host                = var.host
-    template            = list(var.templates[0]) //needs a list as input 
-    folder              = local.folder
-    inside_network      = local.inside_network 
-    network_waiter      = local.network_waiter_default
-    }
-module "attacker" {
-  source                = "./modules/targets"
-  config                = var.config
-  name                  = var.name
-  host                  = var.host
-  template              = list(var.templates[1]) //needs a list as input 
-  folder                = local.folder
-   inside_network       = local.inside_network      
-   public_network       = local.public_network.id // public_network nedd a string es input 
-   network_waiter       = local.network_waiter_attacker
-}
-module "targets" {
-  source                = "./modules/targets"
-  config                = var.config
-  name                  = var.name
-  host                  = var.host
-  template              = slice(var.templates,2,length(var.templates)) //templates[2::] the tail of the tamplates
-  folder                = local.folder
-  network_waiter        = local.network_waiter_default
-  inside_network        = local.inside_network 
-}
+module "vms" {
+  source              = "./modules/vm"
+  count               = length(var.experiment.maschinen)
+  config              = var.config
+  name                = "vm${count.index}"
+  host                = local.host 
+  template            = var.experiment.maschinen[count.index].template         
+  folder              = local.folder
+  //network flages
+  out_attack          = (var.experiment.maschinen[count.index].out_attack ? var.experiment.out_attack: null )
+  out_control         = (var.experiment.maschinen[count.index].out_control ? var.experiment.out_control: null )
+  attack_network      = (var.experiment.maschinen[count.index].attack_network ? local.attack_network: null)
+  control_network     = (var.experiment.maschinen[count.index].control_network ? local.control_network: null) 
+  network_waiter      = (var.experiment.maschinen[count.index].network_waiter ?   local.network_waiter_attacker: local.network_waiter_default)    #local.network_waiter_default
+  }
+
+#########################################################

@@ -1,0 +1,7 @@
+---
+- name: Create Hello-World file
+  file:
+    path: /tmp/hello-world.txt
+    owner: kalivm
+    group: kalivm
+    mode: 0777

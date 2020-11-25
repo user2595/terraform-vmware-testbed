@@ -1,7 +1,8 @@
 
-output "inside_network" {
-value = data.vsphere_network.inside_network
+output "attack_network" {
+value = (var.attack_flag == 1 ?data.vsphere_network.attack_network[*].id: null )
 }
-output "public_network" {
-value = data.vsphere_network.public_network
+output "control_network" {
+value =  (var.control_flag==1  ?data.vsphere_network.control_network[*].id: null )
 }
+

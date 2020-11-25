@@ -15,32 +15,143 @@ variable "vsphere_datastore"                    {default= "VM-Storage3"}
 variable "vsphere_resource_pool"                {default= "Testbed"}
 variable "vsphere_cluster"                      {default= "UCS"}
 variable "vsphere_host_name"                    {default="vsphere7.dai-lab.de"}
-//variable "vsphere_network_public"               {default= "SEC_Testbed_Uplink" }
+variable "vsphere_out_attack"               {default= "SEC_Testbed_Uplink" }
+//variable "vsphere_out_control"               {default= "" }
 ##########################################################################
 ############ Templates ###############################################
 ##########################################################################
 variable "template_dhcp"                        {default = "sec-dhcp"}
-variable "template_kali"                        {default = "kaliVM"}  
+variable "template_attacker"                    {default = "kaliVM"} 
+variable "template_control"                    {default = "controlvm"}  
 variable "template_MinUv2"                      {default = "MinUv2"} 
 variable "template_MinUv1"                      {default = "MinUv1"} 
+variable "template_linux"                      {default = "linux"} 
+variable "template_securtiyOnion"              {default = "securtiyOnion"} 
+variable "template_windows-10"                 {default = "windows-10"} 
 ##########################################################################
 ############ experiments ###############################################
 ##########################################################################
-variable"experiment_0"                          {default ="experiment_MinUv2" }
-variable"experiment_1"                          {default ="experiment_MinUv1" }
-variable"experiment_2"                          {default ="experiment_MinUv2_MinUv1" }
+variable"experiment_0"                          {default ="experiment_0" }
+variable"experiment_1"                          {default ="experiment_1" }
+variable"experiment_2"                          {default ="experiment_2" }
 ##########################################################################
 ############ experments Parameter ###############################################
 ##########################################################################
-locals {
-  templates = list(var.template_dhcp,var.template_kali,var.template_MinUv2,var.template_MinUv1)
-  network_public =  "SEC_Testbed_Uplink" 
-  host   = data.vsphere_host.host.id
+locals { 
   config = {
               datacenter= data.vsphere_datacenter.dc.id
               datastore= data.vsphere_datastore.datastore.id
               resource_pool=data.vsphere_resource_pool.pool.id
-              cluster=data.vsphere_compute_cluster.cluster.id
-              host=data.vsphere_host.host.id
+              cluster=data.vsphere_compute_cluster.cluster.id           
 }
+experiment_0 = {
+  name                  = "experiment_0"
+  host                  = "vsphere7.dai-lab.de"
+  out_attack    = data.vsphere_network.out_attack.id
+  out_control    = data.vsphere_network.out_attack.id //Medical Image Processing
+  creat_attack_network  = true
+  creat_control_network = true
+  maschinen             = local.vm_experiment_0
+  }
+
+
+ vm_experiment_0 = [
+# {
+#   template = var.template_dhcp
+#   out_attack = false
+#   out_control = true
+#   attack_network = true
+#   control_network = false
+#   network_waiter = false
+
+# },
+# {
+#   template = var.template_attacker
+#   out_attack = true
+#   out_control = false
+#   attack_network = true
+#   control_network = false
+#   network_waiter = true
+# },{
+#   template = var.template_control
+#   out_attack = false
+#   out_control = true
+#   attack_network = false
+#   control_network = true
+#   network_waiter = false
+# },
+{
+  template = var.template_MinUv2
+  out_attack = false
+  out_control = false
+  attack_network = true
+  control_network = true
+  network_waiter = false
+  linux_options ={
+    host_name = "Testbedtes"
+    domain    = "Testbedtes"
+  }
+  statik_ip_address = {
+        out_control = null
+        out_attack = null
+        attack_network = "168.192.89.9" 
+        control_network = "88.99.77.9"
+  }
+  statik_ip_netmask = "255.255.255.1"
+},
+# {
+#   template = var.template_MinUv1
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },{  
+#   template = var.template_linux
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },{  
+#   template = var.template_linux
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },{  
+#   template = var.template_windows-10
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },{  
+#   template = var.template_windows-10
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },{  
+#   template = var.template_windows-10
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+# },
+]
+
+
+ 
 }
+
+
+
+
+
+
+
+
