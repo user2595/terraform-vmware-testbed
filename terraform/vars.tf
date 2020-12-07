@@ -1,12 +1,20 @@
 #########################################################################
 ######### Provider#######################################################
 #########################################################################
-variable "vsphere_user"                         {default= "dai\\moussa"}
-variable "vsphere_password"                     {default = "Sonne21§"}
+variable "vsphere_user"                         {default= "secAdmin"}
+
 variable "vsphere_server"                       {default="vcenter.dai-lab.de"}
 # If you have a self-signed cert
 variable "vsphere_unverified_ssl"               {default= true }
 variable "vsphere_version"                      {default= "1.15.0"} 
+##########################################################################
+############ Ansible_Vault ###############################################
+##########################################################################
+variable "ansible_vault_source"                 {default="MeilleursAgents/ansiblevault" }
+variable "ansible_vault_version"                {default= "2.2.0"}
+variable "ansible_vault_vault_path"             {default="../ansible/.vault_pass"}
+variable "ansible_vault_root_folder"            {default= "../ansible"}
+variable "ansible_vault_password_path"          {default= "passwords.yml" }
 ##########################################################################
 ############ DAI-bezifisch ###############################################
 ##########################################################################
@@ -16,24 +24,24 @@ variable "vsphere_resource_pool"                {default= "Testbed"}
 variable "vsphere_cluster"                      {default= "UCS"}
 variable "vsphere_host_name"                    {default="vsphere7.dai-lab.de"}
 variable "vsphere_out_attack"                   {default= "SEC_Testbed_Uplink" }
-//variable "vsphere_out_control"               {default= "" }
+//variable "vsphere_out_control"                {default= "" }
 ##########################################################################
 ############ Templates ###############################################
 ##########################################################################
 variable "template_dhcp"                        {default = "sec-dhcp"}
 variable "template_attacker"                    {default = "kaliVM"} 
-variable "template_control"                    {default = "controlvm"}  
+variable "template_control"                     {default = "controlvm"}  
 variable "template_MinUv2"                      {default = "MinUv2"} 
 variable "template_MinUv1"                      {default = "MinUv1"} 
-variable "template_linux"                      {default = "linux"} 
-variable "template_securtiyOnion"              {default = "securtiyOnion"} 
-variable "template_windows-10"                 {default = "windows-10"} 
+variable "template_linux"                       {default = "linux"} 
+variable "template_securtiyOnion"               {default = "securtiyOnion"} 
+variable "template_windows-10"                  {default = "windows-10"} 
 ##########################################################################
 ############ Usernames ###############################################
 ##########################################################################
-variable "linux_username"                      {default = "master"}
+variable "linux_username"                       {default = "master"}
 variable "kali_username"                        {default = "kalivm"} 
-variable "securtiyOnion_username"              {default = "zwiebel"} 
+variable "securtiyOnion_username"               {default = "zwiebel"} 
 variable "windows_username"                     {default = "windows-1"} 
 ##########################################################################
 ############ experiments ###############################################

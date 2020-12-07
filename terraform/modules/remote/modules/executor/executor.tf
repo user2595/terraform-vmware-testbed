@@ -1,27 +1,34 @@
-
+terraform {
+  required_providers {
+    ansiblevault = {
+      source = "MeilleursAgents/ansiblevault"
+      version = "2.2.0"
+    }
+  }
+}
 //need for ssh password sshpass - sudo apt install sshpass
 resource "null_resource" "executor" {
 connection {
-      type     = "ssh"
-      user     = "kalivm"
+      type     = var.connection_type
+      user     = var.connection_user
       #private_key = file(var.provisioning_key_path)
       #agent = true
-      password = "=0OOA4A5f6P"
-      host     = var.host
+      password = local.password
+      host     = var.connection_host
     }
 
     provisioner "file" {
-    source = "/home/tarik/DAI/hello-world.txt"
-    destination = "/tmp/hello-world.txt"
+    source = var.file_source 
+    destination = var.file_destination
   }
 
   provisioner "remote-exec" {
-    inline = [ "echo =0OOA4A5f6P | sudo -S apt update",
-                "sudo apt install python -y" ]
+    inline = [ "echo ${local.password} | sudo -S apt update",
+                "${var.remote_exec_command}" ]
   }
 
 
   provisioner "local-exec" {
-  command = "ansible-playbook -i '${var.host},' -e ansible_user='kalivm' ansible_ssh_pass='=0OOA4A5f6P' ansible_sudo_pass='=0OOA4A5f6P' ../ansible/dumyPlaybook.yml"
+  command = local.command
   }
 }

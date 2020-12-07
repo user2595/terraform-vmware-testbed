@@ -8,12 +8,12 @@ terraform {
 }
 //https://meilleursagents.github.io/terraform-provider-ansiblevault/
 provider "ansiblevault" {
-  vault_path  = "../ansible/.vault_pass"
-  root_folder = "../ansible"
+  vault_path  = var.ansible_vault_vault_path
+  root_folder = var.ansible_vault_root_folder 
 }
 data "ansiblevault_path" "vmware_user_password" {
-  path = "passwords.yml"
-  key="vmware_user_password"
+  path = var.ansible_vault_password_path
+  key= var.vsphere_user
 }
 provider "vsphere" {
   user           = var.vsphere_user
@@ -51,16 +51,16 @@ data "vsphere_network" "out_attack" {
 # }
 
 module "deployment" {
-  source = "./modules/experiment"
-  config = local.config
-  experiment = local.experiment_0
+  source                        = "./modules/experiment"
+  config                        = local.config
+  experiment                    = local.experiment_0
   
 }
-# module "remote_ex" {
-#   //depends_on = [ module.deployment ]
-#   source = "./modules/remote"
-#   config = local.config
-#   deployment_out = module.deployment.ip_list
-  
-# }
+module "remote_ex" {
+  depends_on                    = [ module.deployment ]
+  source                        = "./modules/remote"
+  config                        = local.config
+  deployment_out_ip_list        = module.deployment.ip_list
+  deployment_out_username_list  = module.deployment.username_list
+}
 

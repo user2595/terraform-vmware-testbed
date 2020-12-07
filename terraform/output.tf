@@ -3,7 +3,7 @@
   value = module.deployment.ip_list
   description = "The Remote desktop IP address of the attackker instance."
  }
- output "out_userna" {
+ output "out_usernam" {
   value = module.deployment.username_list
   description = "The Remote desktop IP address of the attackker instance."
  }
