@@ -8,5 +8,6 @@
           mode:  '555'
           username: moussa
           password: Sonne21§
+          version: "{{current_service_version}}"
           dest: "./roles/install_radar/files/{{ current_service_dir_name }}.zip"
       

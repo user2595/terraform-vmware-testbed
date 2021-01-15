@@ -3,6 +3,7 @@ current_service_name:         "application-scanner"
 current_service_location:     "/opt"
 current_service_dir_name:     "acs.monitoring.application.scanner"
 current_service_description:  "Cosy Application Scanner Master Version"
+current_service_version:      "latest"
 
 
 
