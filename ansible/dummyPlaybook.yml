@@ -1,6 +1,11 @@
 ---
-  - hosts: all
-    become: yes
-    become_method: sudo
-    roles:
-      - hello-world
+- hosts: localhost
+  connection: local
+  become: yes
+  roles:
+    - install_nmap
+  # - install_mongodb
+    - install_radar
+    
+
+      

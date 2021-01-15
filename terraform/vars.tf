@@ -2,7 +2,6 @@
 ######### Provider#######################################################
 #########################################################################
 variable "vsphere_user"                         {default= "secAdmin"}
-
 variable "vsphere_server"                       {default="vcenter.dai-lab.de"}
 # If you have a self-signed cert
 variable "vsphere_unverified_ssl"               {default= true }
@@ -68,7 +67,35 @@ experiment_0 = {
   creat_control_network = true
   maschinen             = local.vm_experiment_0
   }
+prefix_nexus_releases = "https://repositories.dai-labor.de/extern/repository/acs-releases/"
+prefix_nexus_snapshot = "https://repositories.dai-labor.de/extern/repository/acs-snapshot/"
+version_radar         = "3.7.5"
+version_common        = "4.0.3"
+version_issu_tracker  = "2.0.2"
+version_cosy          = "4.0.5"
 
+component_version = {
+  //radar
+  "acs.kb.services"                     = "3.7.5" // 	de/dailab/acs/radar/acs.kb.services/3.7.5/acs.kb.services-3.7.5.zip
+  "acs.monitoring.application.scanner"  = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.application.scanner/3.7.5/acs.monitoring.application.scanner-3.7.5.zip
+  "acs.monitoring.asset"                = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.asset/3.7.5/acs.monitoring.asset-3.7.5.zip 
+  "acs.monitoring.checkmk"              = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.checkmk/3.7.5/acs.monitoring.checkmk-3.7.5.zip
+  "acs.monitoring.manager"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.manager/3.7.5/acs.monitoring.manager-3.7.5.zip
+  "acs.monitoring.nmap"                 = "3.7.5" //de/dailab/acs/radar/acs.monitoring.nmap/3.7.5/acs.monitoring.nmap-3.7.5.zip
+  "acs.monitoring.openvas"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.openvas/3.7.5/acs.monitoring.openvas-3.7.5.zip
+  "acs.risk.service"                    = "3.7.5" //de/dailab/acs/radar/acs.risk.service/3.7.5/acs.risk.service-3.7.5.zip
+  //issu-tracker
+  "acs.filter.vulnerability"            ="2.0.2"  //de/acs/issue/tracker/acs.filter.vulnerability/2.0.2/acs.filter.vulnerability-2.0.2.zip
+  "acs.issue.tracker.service"           ="2.0.2"  //de/acs/issue/tracker/acs.issue.tracker.service/2.0.2/acs.issue.tracker.service-2.0.2.zip
+//common
+//	de/acs/common/acs.common.api.gateway/4.0.3/acs.common.api.gateway-4.0.3.zip
+//cosy
+// de/acs/cosy/acs.attack.graph.service/4.0.5/acs.attack.graph.service-4.0.5.zip
+// de/acs/cosy/acs.mtp.service/4.0.5/acs.mtp.service-4.0.5.zip
+// de/acs/cosy/acs.prediction.service/4.0.5/acs.prediction.service-4.0.5.zip
+// de/acs/cosy/acs.snort.backend/4.0.5/acs.snort.backend-4.0.5.zip
+//	de/acs/cosy/acs.ti.service/4.0.5/acs.ti.service-4.0.5.zip
+}
 
  vm_experiment_0 = [
 {

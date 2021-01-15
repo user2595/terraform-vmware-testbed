@@ -1,0 +1,5 @@
+---
+- name: Install RADA on all CC SEC VMs
+  hosts: all
+  roles:
+    - install_RADA

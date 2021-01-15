@@ -1,0 +1,8 @@
+[Unit]
+Description={{ current_service_description}}
+
+[Service]
+WorkingDirectory={{ current_service_location }}/{{ current_service_dir_name }}
+ExecStart=/bin/bash {{ current_service_location }}/{{ current_service_dir_name }}/start.sh
+Restart=on-failure
+RestartSec=5

@@ -23,8 +23,7 @@ connection {
   }
 
   provisioner "remote-exec" {
-    inline = [ "echo ${local.password} | sudo -S apt update",
-                "${var.remote_exec_command}" ]
+    inline = concat( ["echo ${local.password} | sudo -S apt update"],var.remote_exec_command )
   }
 
 
