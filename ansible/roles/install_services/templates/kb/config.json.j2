@@ -1,0 +1,70 @@
+{
+  "service": {
+    "host": "{{ ansible_user_ip }}",
+    "port": 8793,
+    "name": "kb",
+    "updateInterval": 24
+  },
+  "api-gateway": {
+    "port": 8787,
+    "host": "{{ ansible_user_ip }}"
+  },
+  "feeds": [
+    {
+      "class": "de.acs.kb.feed.nvd.NVDFeed",
+      "url": "https://nvd.nist.gov/feeds/json/cve/1.1/",
+      "file": "nvdcve-1.1-%d",
+      "database": {
+        "class": "de.acs.kb.database.mongo.MongoVulnerabilityDatabase",
+        "serverAddresses": [
+          {
+            "host": "{{ ansible_user_ip }}",
+            "port": 27017
+          }
+        ],
+        "name": "vulnerabilities",
+        "collection": "nvd"
+      }
+    },
+    {
+      "class": "de.acs.kb.feed.nvt.NVTFeed",
+      "url": "rsync://feed.community.greenbone.net/nvt-feed/",
+      "file": "./nvt-feed",
+      "database": {
+        "class": "de.acs.kb.database.mongo.MongoVulnerabilityDatabase",
+        "serverAddresses": [
+          {
+            "host": "{{ ansible_user_ip }}",
+            "port": 27017
+          }
+        ],
+        "name": "vulnerabilities",
+        "collection": "nvt"
+      }
+    }
+  ],
+  "data-feeds": [
+    {
+      "class": "de.acs.kb.feed.oval.OVALFeed",
+      "url": "https://people.canonical.com/~ubuntu-security/oval/",
+      "file": "com.ubuntu.bionic.cve.oval.xml.bz2",
+      "database": {
+        "class": "de.acs.kb.database.mongo.MongoProductDatabase",
+        "serverAddresses": [
+          {
+            "host": "{{ ansible_user_ip }}",
+            "port": 27017
+          }
+        ],
+        "name": "productDB",
+        "collection": "packageCPEMapping"
+      }
+    }
+  ],
+  "ssl": {
+    "use": false
+  },
+  "access": {
+    "use": false
+  }
+}

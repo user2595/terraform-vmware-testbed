@@ -1,0 +1,28 @@
+{
+	"service" : {
+		"name" : "asset-provider-rest-api",
+		"host" : "{{ ansible_user_ip }}",
+		"port" : 8797
+	},
+	"monitoring-manager" : {
+		"port": 8788,
+		"host": "{{ ansible_user_ip }}"
+	},
+	"metrics" : {
+		"enabled": true,
+		"port": 8908
+	},
+	"monitoring.data.source": {
+		"isParser": false,
+		"useSubnetInfo": true
+	},
+	"assets.directory.path":"changeit",
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	},
+    "publishURL": "/rest/publish/:service",
+    "unpublishURL": "/rest/unpublish/:service"
+}

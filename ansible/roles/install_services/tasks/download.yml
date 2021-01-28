@@ -1,0 +1,13 @@
+---
+    - name: downlaod soruce from nexus
+      maven_artifact:
+          group_id: "{{current_service_group_id}}"
+          artifact_id: "{{ current_service_dir_name }}"
+          repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'
+          extension: zip 
+          mode:  '555'
+          username: moussa
+          password: Sonne21§
+          version: "{{current_service_version}}"
+          dest: "./roles/install_services/files/{{ current_service_dir_name }}.zip"
+      

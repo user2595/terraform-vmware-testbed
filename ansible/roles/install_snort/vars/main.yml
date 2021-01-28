@@ -1,0 +1,7 @@
+snort_version: 2.9.17
+daq_version: 2.0.7
+snort_rule_path: '/etc/snort/rules'
+snort_so_rule_path: '/etc/snort/so_rules'
+snort_preproc_rule_path: '/etc/snort/preproc_rules'
+snort_whitelist_path: '/etc/snort/rules/iplists'
+snort_blacklist_path: '/etc/snort/rules/iplists'
