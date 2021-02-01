@@ -17,10 +17,10 @@ connection {
       host     = var.connection_host
     }
 
-    provisioner "file" {
-    source = var.file_source 
-    destination = var.file_destination
-  }
+  #   provisioner "file" {
+  #   source = var.file_source 
+  #   destination = var.file_destination
+  # }
 
   provisioner "remote-exec" {
     inline = concat( ["echo ${local.password} | sudo -S apt update"],var.remote_exec_command )

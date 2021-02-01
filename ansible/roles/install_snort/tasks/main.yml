@@ -159,7 +159,7 @@
       become: yes
       template:
         src: "../templates/etc/init/snort.conf.j2"
-        dest: "/etc/init/snort.conf"
+        dest: "snort.conf"
         owner: snort
         group: snort
         mode: 0755
