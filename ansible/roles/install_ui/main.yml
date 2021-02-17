@@ -1,0 +1,5 @@
+- name: Replace  localhost whit host-ip in UI config-file
+  ansible.builtin.replace:
+    path: /var/www/html/assets/config/config.json
+    regexp: 'localhost'
+    replace: "{{ansible_user_ip}}"

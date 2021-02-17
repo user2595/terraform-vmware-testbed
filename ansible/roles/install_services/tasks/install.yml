@@ -1,11 +1,17 @@
 ---
 - name: Unpack build artifact to remote
   unarchive:
-    src: "{{current_service_dir_name}}.zip"
+    remote_src: yes
+    src: "{{ current_service_location }}/{{current_service_dir_name}}.zip" #
     dest: "{{ current_service_location }}"
     mode: '555'
   become: true
 
+- name: Remove archive file (delete file)
+  ansible.builtin.file:
+    path: "{{ current_service_location }}/{{current_service_dir_name}}.zip"
+    state: absent
+  become: true
 - name: "Rename unpacked artifact folder to {{ current_service_dir_name }}"
   shell:
     cmd: "ls | grep {{current_service_dir_name}} | xargs -I{} mv {} {{ current_service_dir_name }}"
@@ -20,12 +26,36 @@
     recurse: true
   become: true
 
+- name: Replace build artifact verticle logback.xml file
+  template:
+    src: logback.xml.j2
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/logback.xml"
+    mode: '555'
+  become: true
+
 - name: Replace build artifact verticle configuration file
   template:
     src: "{{current_service_name}}/config.json.j2"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/config.json"
     mode: '440'
   become: true
+
+- name: Replace build artifact verticle kb nvdcve-1.0-2019.meta 
+  template:
+    src: "{{current_service_name}}/nvdcve-1.0-2019.meta"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.meta"
+    mode: '440'
+  become: true
+  when:  current_service_name == "kb"
+
+- name: Replace build artifact verticle kb nvdcve-1.0-2019.zib 
+  template:
+    src: "{{current_service_name}}/nvdcve-1.0-2019.zip"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.zip"
+    mode: '440'
+  become: true
+  when:  current_service_name == "kb"
+
 
 - name: Replace build artifact start.sh file to enable running with java versions other thad adopt-open-jdk 12
   copy:
@@ -54,7 +84,7 @@
   command: systemctl daemon-reload
   become: true
 
-- name: Start application scanner service
+- name: Start "{{ current_service_name }}" service
   service:
     name: "{{ current_service_name }}"
     state: "started"

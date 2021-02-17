@@ -152,7 +152,7 @@
       synchronize:
          src: /opt/snort-src/snort-{{snort_version}}/src/dynamic-preprocessors/build/usr/local/lib/snort_dynamicpreprocessor/ 
          dest: /usr/local/lib/snort_dynamicpreprocessor
-      delegate_to: "{{ inventory_hostname }}"
+      #delegate_to: "{{ inventory_hostname }}"
       when: install_snort.changed
 
     - name: Snort Startup script

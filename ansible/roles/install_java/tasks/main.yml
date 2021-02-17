@@ -1,8 +1,5 @@
 ---
 
-# creat log folder 
-# setz right log folder
-# set onwner log folder
 
 - name: Create Log directory
   become: yes
@@ -10,7 +7,7 @@
     path: /opt/logs 
     state: directory
     mode: 555 
-    owner: {{ansible_user_name}}
+    owner: "{{ansible_user_name}}"
 
 
 - name: install unzip tool on Ubuntu / Debian via apt

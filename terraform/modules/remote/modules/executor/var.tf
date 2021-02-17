@@ -12,8 +12,9 @@ variable "connection_type" {default = "ssh"}
 ##########################################################################
 ############ remote-exec ##################################################
 ##########################################################################
-variable "remote_exec_command" {default = ["sudo apt install python -y"] }
-##########################################################################
+variable "remote_exec_command" {default = [ "sudo apt install python3 python3-pip -y", 
+                                            "pip3 install ansible lxml"] }
+##################################################################### #####
 ############ local-exec ##################################################
 ##########################################################################
 variable "path_to_playbook"     {default = "../ansible/dummyPlaybook.yml"   }
@@ -35,6 +36,6 @@ locals{
   ansible_sudo_pass              = "ansible_become_password='${local.password}'"//ansible_become_password
  
   password                       =  data.ansiblevault_path.password.value
-   command = "ansible-playbook -i '${var.connection_host},' -e ${local.ansible_user_ip} -e ${local.ansible_user_name} -e ${local.ansible_sudo_pass} ${var.path_to_playbook}"
+   command = "ansible-playbook  ${var.path_to_playbook}  --extra-vars=' ${local.ansible_user_ip}  ${local.ansible_user_name}  ${local.ansible_sudo_pass}' "
  # command = "ansible-playbook -i '${var.connection_host},' -e ${local.ansible_user} -e ${local.ansible_ssh_pass} -e ${local.ansible_sudo_pass} ${var.path_to_playbook}"
 }

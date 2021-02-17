@@ -1,18 +1,21 @@
 ---
 - hosts: all
-  #connection: ssh
+  connection: ssh
   become: yes
+  remote_user: master
   roles:
-   - install_nmap
-   #- install_snort
-   - install_mongodb
-    # - role: install_services
-    #   current_service_name:         "api-gateway"
-    #   current_service_location:     "/opt"
-    #   current_service_dir_name:     "acs.common.api.gateway"
-    #   current_service_description:  "Common API Gateway Master Version"
-    #   current_service_version:      "latest"
-    #   current_service_group_id:     "de.acs.common"
+  #  - install_nmap
+  #  - install_snort
+  #  - install_mongodb
+  #  - install_ui
+    - install_java
+    - role: install_services
+      current_service_name:         "api-gateway" 
+      current_service_location:     "/opt"
+      current_service_dir_name:     "acs.common.api.gateway"
+      current_service_description:  "Common API Gateway Master Version"
+      current_service_version:      "latest"
+      current_service_group_id:     "de.acs.common"
     # - role: install_services
     #   current_service_name:         "monitoring-rest-api"
     #   current_service_location:     "/opt"

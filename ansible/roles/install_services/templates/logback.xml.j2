@@ -1,0 +1,50 @@
+   <!--Put your personal settings here and rename to logback.xml. Do not modify this template with your personal settings. -->
+        <configuration>
+            <!-- configure file output -->
+            <property name="LOG_LOCATION" value="{{current_service_location}}/logs/{{current_service_dir_name}}.log"/>
+            <appender name="FILE_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${LOG_LOCATION}</file>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <fileNamePattern>logs/archived/service.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                    <!-- each archived file, size max 10MB -->
+                    <maxFileSize>30MB</maxFileSize>
+                    <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+                    <totalSizeCap>1GB</totalSizeCap>
+                    <!-- 60 days to keep -->
+                    <maxHistory>30</maxHistory>
+                </rollingPolicy>
+
+                <encoder>
+                    <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+                </encoder>
+            </appender>
+
+            <!-- configure console output -->
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{40}:%line] - %msg%n</pattern>
+                </encoder>
+            </appender>
+
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{40}:%line] - %msg%n</pattern>
+                </encoder>
+            </appender>
+
+            <logger name="org" level="ERROR"/>
+            <logger name="de.acs" level="DEBUG" />
+
+            <root level="INFO">
+                    <appender-ref ref="STDOUT"/>
+                    <appender-ref ref="FILE_ROLLING"/>
+            </root>
+
+        </configuration>
+<!-- kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    name: {{current_service_dir_name}}-configmap
+  name: {{current_service_dir_name}}-configmap -->
