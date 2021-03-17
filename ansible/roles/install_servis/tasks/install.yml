@@ -1,0 +1,61 @@
+---
+- name: Unpack build artifact to remote
+  unarchive:
+    src: "acs.monitoring.application.scanner.zip"
+    dest: "{{ current_service_location }}"
+    mode: '555'
+  become: true
+
+- name: "Rename unpacked artifact folder to {{ current_service_dir_name }}"
+  shell:
+    cmd: "ls | grep acs.monitoring.application.scanner | xargs -I{} mv {} {{ current_service_dir_name }}"
+    chdir: "{{ current_service_location }}"
+  become: true
+
+- name: "Change ownership of {{ current_service_dir_name }} folder"
+  file:
+    path: "{{ current_service_location }}/{{ current_service_dir_name }}"
+    owner: "{{ ansible_user_name }}"
+    group: "{{ ansible_user_name }}"
+    recurse: true
+  become: true
+
+- name: Replace build artifact verticle configuration file
+  template:
+    src: "{{current_service_name}}/config.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/config.json"
+    mode: '440'
+  become: true
+
+- name: Replace build artifact start.sh file to enable running with java versions other thad adopt-open-jdk 12
+  copy:
+    src: start.sh
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/start.sh"
+    mode: '555'
+  become: true
+  when: java_preinstalled == true
+
+- name: Replace build artifact start.sh file with adapted version for using manually installed java
+  template:
+    src: start.sh_java_manually_installed.j2
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/start.sh"
+    mode: '555'
+  become: true
+  when: java_preinstalled == false
+
+- name: Copy service file to /etc/systemd/system
+  template:
+    src: current.service.j2
+    dest: "/etc/systemd/system/{{ current_service_name }}.service"
+    mode: '755'
+  become: true
+
+- name: reload service daemon
+  command: systemctl daemon-reload
+  become: true
+
+- name: Start application scanner service
+  service:
+    name: "{{ current_service_name }}"
+    state: "started"
+  become: true

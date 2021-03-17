@@ -1,0 +1,12 @@
+---
+    - name: downlaod soruce from nexus
+      maven_artifact:
+          group_id: de.acs.radar
+          artifact_id: "{{ current_service_dir_name }}"
+          repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'
+          extension: zip 
+          mode:  '555'
+          username: moussa
+          password: Sonne21§
+          dest: "./roles/install_radar/files/{{ current_service_dir_name }}.zip"
+      

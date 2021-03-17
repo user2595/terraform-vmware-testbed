@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# logging configuration for vertx
+JAVA_OPTS="-Dlogback.configurationFile=conf/logback.xml -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory -XX:+DisableExplicitGC -Xmx2g -Xms32m"
+
+# service jar
+SERVICE_JAR="*-fat.jar"
+
+# json configuration file
+CONFIG_FILE="conf/config.json"
+
+{{ java_location }}/{{ java_unpacked_folder_name }}/bin/java $JAVA_OPTS -jar $SERVICE_JAR -conf $CONFIG_FILE
