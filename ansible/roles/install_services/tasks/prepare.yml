@@ -1,0 +1,95 @@
+---
+
+# creat log folder 
+# setz right log folder
+# set onwner log folder
+
+- name: Create Log directory
+  become: yes
+  file: 
+    path: /opt/logs 
+    state: directory
+    mode: 555 
+    owner: {{ansible_user_name}}
+
+
+- name: install unzip tool on Ubuntu / Debian via apt
+  apt:
+    name: unzip
+    state: latest
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: install unzip tool on ContOS / Red Hat
+  yum:
+    name: unzip
+    state: latest
+  become: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Check if manual Java installation already present and set is_manual_java_present default value to false
+  shell: "echo $(ls {{ java_location }} | grep {{ java_unpacked_folder_name }})"
+  register: java_check_result
+  no_log: true
+
+- name: Set is_manual_java_present to true, if manual Java installation already present
+  set_fact:
+    is_manual_java_present: true
+  when: java_check_result.stdout != ""
+  no_log: true
+
+- name: Set is_manual_java_present to false, if manual Java installation is not present
+  set_fact:
+    is_manual_java_present: false
+  when: java_check_result.stdout == ""
+  no_log: true
+
+- name: Getting installed Java version
+  shell: echo $(java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g' | sed 's/\(.*\)\..*\..*/\1/')
+  register: version
+  ignore_errors: True
+  no_log: True
+
+- name: Check installed Java version does not collide with manually installed Java
+  shell: "echo $(whereis java | grep {{ java_location }}/{{ java_unpacked_folder_name }})"
+  register: whereis_java_result
+
+- name: No java installed
+  set_fact: 
+    java_preinstalled: false
+  when: version.stdout == ""
+  no_log: True
+
+- name: Java installed in a version, which is too old
+  set_fact: 
+    java_preinstalled: false
+  when: (version.stdout|int < 11) and (version.stdout != "")
+  no_log: True
+
+- name: Necessary Java available
+  set_fact: 
+    java_preinstalled: true
+  when: version.stdout|int >= 11
+  no_log: True
+
+- name: Java 11 or higher needed
+  debug:
+    msg: Java 11 or higher needs to be installed
+  when: java_preinstalled == false
+
+- name: "Manually installing Java in needed version to {{ java_location }}/{{ java_unpacked_folder_name }}"
+  unarchive:
+    src: "{{ java_download_url }}"
+    dest: "{{ java_location }}"
+    mode: '555'
+    remote_src: yes
+  become: true
+  when: (java_preinstalled == false) and (is_manual_java_present == false)
+
+- name: Remove manually installed Java, because needed Java was detected on another location
+  file: 
+    path: "{{ java_location }}/{{ java_unpacked_folder_name }}"
+    state: absent
+  become: true
+  when: (java_preinstalled == true) and (is_manual_java_present == true) and (whereis_java_result == "")
+  

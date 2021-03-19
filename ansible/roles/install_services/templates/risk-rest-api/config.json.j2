@@ -1,0 +1,38 @@
+{
+	"service" : {
+		"name" : "risk-rest-api",
+		"host" : "{{ ansible_user_ip }}",
+		"port" : 8794
+	},
+	"api-gateway" : {
+		"port": 8787,
+		"host": "{{ ansible_user_ip }}"
+	},
+	"metrics" : {
+		"enabled": true,
+		"port": 8907
+	},
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	},
+	"issue-connector": {
+		"path": "/api/issue-tracker/issues/fromRisk",
+		"database" : {
+			"collection": "collection",
+			"user": "user",
+			"password": "password"
+		}
+	},
+	"kb-endpoints": {
+		"product-list": "/api/kb/products",
+		"single-product": "/api/kb/product",
+		"vulnerability-by-id": "/api/kb/id"
+	},
+	"storage": {
+		"path": ""
+	},
+	"useKubernetesDiscovery": false
+}

@@ -76,11 +76,12 @@ version_cosy          = "4.0.5"
 
 component_version = {
   //radar
-  "acs.kb.services"                     = "3.7.5" // 	de/dailab/acs/radar/acs.kb.services/3.7.5/acs.kb.services-3.7.5.zip
+  "acs.kb.services"                     = "3.7.5" // 	de/dailab/acs/radar/  /3.7.5/acs.kb.services-3.7.5.zip
   "acs.monitoring.application.scanner"  = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.application.scanner/3.7.5/acs.monitoring.application.scanner-3.7.5.zip
   "acs.monitoring.asset"                = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.asset/3.7.5/acs.monitoring.asset-3.7.5.zip 
   "acs.monitoring.checkmk"              = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.checkmk/3.7.5/acs.monitoring.checkmk-3.7.5.zip
   "acs.monitoring.manager"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.manager/3.7.5/acs.monitoring.manager-3.7.5.zip
+//https://repositories.dai-labor.de/extern/repositoryde/acs/radar/acs.monitoring.manager/maven-metadata.xml"  
   "acs.monitoring.nmap"                 = "3.7.5" //de/dailab/acs/radar/acs.monitoring.nmap/3.7.5/acs.monitoring.nmap-3.7.5.zip
   "acs.monitoring.openvas"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.openvas/3.7.5/acs.monitoring.openvas-3.7.5.zip
   "acs.risk.service"                    = "3.7.5" //de/dailab/acs/radar/acs.risk.service/3.7.5/acs.risk.service-3.7.5.zip

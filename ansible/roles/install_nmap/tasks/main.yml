@@ -1,6 +1,23 @@
 - name: install nmap 
-  apt:
+  package:
     name: nmap
     state: present
-    update_cache: false
   become: true
+ 
+- name: Downlaod omp
+  get_url: 
+    url:  http://download.greenbone.net/tools/omp
+    dest: /usr/local/bin
+
+- name: changing perm  adding "+x"
+  file: 
+    dest: /usr/local/bin/omp
+    mode: a+x
+
+- name: install omp
+  shell: |
+    echo 'omp() { /usr/local/bin/omp $@; }' >> ~/.bashrc && \
+    . ~/.bashrc
+
+
+

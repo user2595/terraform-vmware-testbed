@@ -1,0 +1,31 @@
+{
+  "service": {
+    "host": "{{ ansible_user_ip }}",
+    "port": 8793,
+    "name": "kb",
+    "updateInterval": 24
+  },
+  "api-gateway": {
+    "port": 8787,
+    "host": "{{ ansible_user_ip }}"
+  },
+
+  "feeds": [
+    {
+      "class": "de.acs.kb.feed.nvd.NVDFeed",
+	  "url": "file:/opt/acs.kb.services/conf/",
+	  "file": "nvdcve-1.0-2019"
+    }
+  ],
+ 
+  "data-feeds": [
+ 
+  
+  ],
+  "ssl": {
+    "use": false
+  },
+  "access": {
+    "use": false
+  }
+}
