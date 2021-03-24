@@ -1,3 +1,7 @@
+set the ansible-vault password (from Teampass)
+```console
+echo <password> > ./ansible/.vault_pass
+``
 
 Initialize the project, which downloads a plugin that allows Terraform to interact with Docker.
 ```console
