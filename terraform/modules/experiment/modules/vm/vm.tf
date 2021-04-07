@@ -19,14 +19,23 @@ resource "vsphere_virtual_machine" "vm" {
   scsi_type = data.vsphere_virtual_machine.template.scsi_type
 
 
-
-
-
   dynamic "network_interface" {
     # Include this block only if var.out_attack is
     # set to a non-null value.
     for_each = var.attack_network[*]
     content {
+      use_static_mac  = var.use_static_mac
+      mac_address     = "d4:4d:27:6f:a8:c${var.name}"
+      network_id = network_interface.value
+    }
+  }
+  dynamic "network_interface" {
+    # Include this block only if var.out_attack is
+    # set to a non-null value.
+    for_each = var.control_network[*]
+    content {
+      use_static_mac  = var.use_static_mac
+      mac_address     = "a4:4d:27:6f:a8:c${var.name}"
       network_id = network_interface.value
     }
   }
@@ -35,6 +44,8 @@ resource "vsphere_virtual_machine" "vm" {
     # set to a non-null value.
     for_each = var.out_attack[*]
     content {
+      use_static_mac  = var.use_static_mac
+      mac_address     = "b4:4d:27:6f:a8:c${var.name}"
       network_id = network_interface.value
     }
   }
@@ -43,7 +54,9 @@ resource "vsphere_virtual_machine" "vm" {
     # set to a non-null value.
     for_each = var.out_control[*]
     content {
-      network_id = network_interface.value
+      use_static_mac  = var.use_static_mac
+      mac_address     = "c4:4d:27:6f:a8:c${var.name}"
+      network_id      = network_interface.value
     }
   }
   //This “special power” of the splat operators is intended as a way to concisely adapt between a possibly-null single value and a list, because repetition based on lists is generally how Terraform generalizes situations where something is conditionally present.

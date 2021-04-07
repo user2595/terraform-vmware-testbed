@@ -5,6 +5,9 @@ variable "name"             {}
 variable "host"             {}
 variable "folder"           {}
 variable "username"         {}
+variable "use_static_mac" {default = false}
+  
+
 variable "control_network"   {
     type    = string 
     default = null                               

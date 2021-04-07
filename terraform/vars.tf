@@ -30,7 +30,7 @@ variable "vsphere_out_attack"                   {default= "SEC_Testbed_Uplink" }
 variable "template_dhcp"                        {default = "sec-dhcp"}
 variable "template_attacker"                    {default = "kaliVM"} 
 variable "template_control"                     {default = "controlvm"}  
-variable "template_MinUv2"                      {default = "MinUv2"} 
+variable "template_MinUv2"                      {default = "MinUv2-Modify"} 
 variable "template_MinUv1"                      {default = "MinUv1"} 
 variable "template_linux"                       {default = "linux"} 
 variable "template_securtiyOnion"               {default = "securtiyOnion"} 
@@ -59,8 +59,8 @@ locals {
               cluster=data.vsphere_compute_cluster.cluster.id           
 }
 experiment_0 = {
-  name                  = "experiment_0"
-  host                  = "vsphere7.dai-lab.de"
+  name                  = "experiment_1"
+  host                  = "vsphere12.dai-lab.de"
   out_attack            = data.vsphere_network.out_attack.id
   out_control           = data.vsphere_network.out_attack.id 
   creat_attack_network  = true
@@ -99,16 +99,17 @@ component_version = {
 }
 
  vm_experiment_0 = [
-{
-  template = var.template_dhcp
-  username = var.linux_username
-  out_attack = false
-  out_control = false
-  attack_network = true
-  control_network = true
-  network_waiter = false
+# {
+#   template = var.template_dhcp
+#   username = var.linux_username
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+#   use_static_mac = true
 
-},
+# },
 {
   template = var.template_attacker
   username = var.kali_username
@@ -117,7 +118,9 @@ component_version = {
   attack_network = true
   control_network = false
   network_waiter = true
-},{
+  use_static_mac = true
+},
+{
   template = var.template_control
   username = var.linux_username
   out_attack = false
@@ -125,16 +128,18 @@ component_version = {
   attack_network = false
   control_network = true
   network_waiter = true
-},
-{
-  template = var.template_MinUv2
-  username = null
-  out_attack = false
-  out_control = false
-  attack_network = true
-  control_network = true
-  network_waiter = false
-  },
+   use_static_mac = true
+ },
+# {
+#   template = var.template_MinUv2
+#   username = null
+#   out_attack = false
+#   out_control = false
+#   attack_network = true
+#   control_network = true
+#   network_waiter = false
+#   use_static_mac = true
+#   },
 # {
 #   template = var.template_MinUv1
 #   out_attack = false
@@ -142,6 +147,7 @@ component_version = {
 #   attack_network = true
 #   control_network = true
 #   network_waiter = false
+#   use_static_mac = false
 # },{  
 #   template = var.template_linux
 #   username = var.linux_username
@@ -150,6 +156,7 @@ component_version = {
 #   attack_network = true
 #   control_network = true
 #   network_waiter = false
+#   use_static_mac = false
 # },{  
 #   template = var.template_windows-10
 #   username = var.windows_username
@@ -158,6 +165,7 @@ component_version = {
 #   attack_network = true
 #   control_network = true
 #   network_waiter = false
+#   use_static_mac = false
 # },
 
 ]
