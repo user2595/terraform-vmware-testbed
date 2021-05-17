@@ -9,9 +9,9 @@ terraform {
 //need for ssh password sshpass - sudo apt install sshpass
 resource "null_resource" "remote-executor" {
 //always run remote-exec whenn terraform apply 
- triggers = {
-    always_run = "${timestamp()}"
-  }
+ //triggers = {
+   // always_run = "${timestamp()}"
+  //}
 
 connection {
       type     = var.connection_type
@@ -20,12 +20,13 @@ connection {
       #agent = true
       password = local.password
       host     = var.connection_host
+      timeout = "10m"
     }
 
 
 
   provisioner "remote-exec" {
-    inline = concat( ["echo ${local.password} | sudo -S apt update"],var.remote_exec_command )
+    inline = concat( ["echo ${local.password}  | sudo -S  apt-get update ; "],var.remote_exec_command )
   }
 
 
@@ -34,6 +35,7 @@ connection {
 //need for ssh password sshpass - sudo apt install sshpass
 resource "null_resource" "local-executor" {
 //always run local-exec whenn terraform apply
+ depends_on = [null_resource.remote-executor]
  triggers = {
     always_run = "${timestamp()}"
   }
@@ -41,6 +43,6 @@ resource "null_resource" "local-executor" {
 
   provisioner "local-exec" {
   working_dir = local.working_dir
-  command = local.command
+  command   =     local.command
   }
 }

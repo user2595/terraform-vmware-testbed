@@ -1,0 +1,11 @@
+/var/www/html
+
+'password1'
+sftp_reader@192.168.190.158:/upload/angularUI/angularUI_latest.tar.gz /opt
+
+
+/opt/angularUI_latest.tar.gz
+
+/opt/angularUI/dist/
+
+/var/www/html/assets/config/config.json

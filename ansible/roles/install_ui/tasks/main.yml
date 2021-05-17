@@ -1,0 +1,66 @@
+
+
+    - name: remove old Ui 
+      file:
+        path: /var/www/html
+        state: absent
+      become: yes
+
+    - name: fetch UI from sftp server 
+      shell: sshpass -p 'password1'  sftp -o StrictHostKeyChecking=accept-new -r sftp_reader@192.168.190.158:/upload/angularUI/angularUI_latest.tar.gz /opt
+      become: yes
+    
+    - name: Unarchive UI 
+      unarchive:
+        src: /opt/angularUI_latest.tar.gz
+        dest: /opt/
+        remote_src: yes
+      become: yes
+    
+    - name: copy html file
+      copy: 
+        src: /opt/angularUI/dist/ 
+        dest: /var/www/html/
+        remote_src: yes
+      become: yes
+
+    - name: Replace   UI config-file
+      template:
+        src: config.json.j2
+        dest: "/var/www/html/assets/config/config.json"
+        mode: '755'
+      become: true
+
+    - name: Replace  localhost whit host-ip in UI config-file
+      replace:
+        path:         regexp: 'localhost'
+        replace:  "{{ansible_user_ip}}"
+      become: yes
+
+    - name: Replace authentication in UI config-file
+      replace:
+        path: /var/www/html/assets/config/config.json
+        regexp:   '"use": "keycloak",'
+        replace:  '"use": "",'
+      become: yes
+
+    - name: Replace database in UI config-file
+      replace:
+        path: /var/www/html/assets/config/config.json
+        regexp:   '""collection"": ""collection"",'
+        replace:  '""collection"": ""issues"",'
+      become: yes
+      
+    - name: Replace database in UI config-file
+      replace:
+        path: /var/www/html/assets/config/config.json
+        regexp:   '""user"": ""user"",'
+        replace:  ''
+      become: yes  
+    
+    - name: Replace database in UI config-file
+      replace:
+        path: /var/www/html/assets/config/config.json
+        regexp:   '""password"": ""password""'
+        replace:  ''
+      become: yes  

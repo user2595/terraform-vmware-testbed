@@ -2,7 +2,7 @@
 - name: Unpack build artifact to remote
   unarchive:
     remote_src: yes
-    src: "{{ current_service_location }}/{{current_service_dir_name}}.zip" #
+    src: "{{ current_service_location }}/{{current_service_dir_name}}.zip" 
     dest: "{{ current_service_location }}"
     mode: '555'
   become: true
@@ -40,7 +40,43 @@
     mode: '440'
   become: true
 
-- name: Replace build artifact verticle kb nvdcve-1.0-2019.meta 
+
+- name: Replace random on verticle snort-backend 
+  template:
+    src: "{{current_service_name}}/random"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/random"
+    mode: '440'
+  become: true
+  when:  current_service_name == "snort-alerts"
+ 
+- name: Replace empty on verticle snort-backend
+  template:
+    src: "{{current_service_name}}/empty"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/empty"
+    mode: '440'
+  become: true
+  when:  current_service_name == "snort-alerts"
+
+
+
+- name: Replace cpeClassifiers.json on verticle prediction  
+  template:
+    src: "{{current_service_name}}/cpeClassifiers.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/cpeClassifiers.json"
+    mode: '440'
+  become: true
+  when:  current_service_name == "prediction"
+ 
+- name: Replace demoThreatActorModels.json on verticle prediction 
+  template:
+    src: "{{current_service_name}}/demoThreatActorModels.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/demoThreatActorModels.json"
+    mode: '440'
+  become: true
+  when:  current_service_name == "prediction"
+
+
+- name: Copy nvdcve-1.0-2019.meta to  verticle kb 
   template:
     src: "{{current_service_name}}/nvdcve-1.0-2019.meta"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.meta"
@@ -48,14 +84,13 @@
   become: true
   when:  current_service_name == "kb"
 
-- name: Replace build artifact verticle kb nvdcve-1.0-2019.zib 
-  template:
-    src: "{{current_service_name}}/nvdcve-1.0-2019.zip"
-    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.zip"
+- name: copy nvdcve-1.0-2019.zib tp verticle kb 
+  copy:
+    src: "nvdcve-1.0-2019.json.zip"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.json.zip"
     mode: '440'
   become: true
   when:  current_service_name == "kb"
-
 
 - name: Replace build artifact start.sh file to enable running with java versions other thad adopt-open-jdk 12
   copy:
@@ -88,4 +123,5 @@
   service:
     name: "{{ current_service_name }}"
     state: "started"
+    #enabled: yes
   become: true

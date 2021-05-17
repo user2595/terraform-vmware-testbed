@@ -56,11 +56,11 @@ module "deployment" {
   experiment                    = local.experiment_0
   
 }
-# module "remote_ex" {
-#   depends_on                    = [ module.deployment ]
-#   source                        = "./modules/remote"
-#   config                        = local.config
-#   deployment_out_ip_list        = module.deployment.ip_list
-#   deployment_out_username_list  = module.deployment.username_list
-# }
+module "remote_ex" {
+  depends_on                    = [ module.deployment ]
+  source                        = "./modules/remote"
+  config                        = local.config
+  deployment_out_ip_list        = module.deployment.ip_list
+  deployment_out_username_list  = module.deployment.username_list
+}
 

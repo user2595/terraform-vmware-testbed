@@ -1,5 +1,4 @@
 #  tasks: https://github.com/NikhilaSattala/snort-ansible/blob/master/roles/snort/tasks/main.yml
- #tasks:
     - name: Install Snort pre-requisites
       become: yes
       apt: 
@@ -35,6 +34,14 @@
         url: https://www.snort.org/downloads/snort/daq-{{daq_version}}.tar.gz
         dest: /tmp/
       register: download_daq
+      ignore_errors: true
+
+    - name: Validate download DAQ
+      copy:
+          src: daq-{{daq_version}}.tar.gz
+          dest: /tmp/daq-{{daq_version}}.tar.gz
+      become: true
+      when:  download_daq.failed
 
     - name: Untar DAQ
       become: yes
@@ -54,15 +61,21 @@
       - "/usr/bin/make"
       - "/usr/bin/make install"
       when: untar_daq.changed    
-    
-    
-    
-    
     - name: Download Snort
       get_url: 
         url: https://snort.org/downloads/snort/snort-{{snort_version}}.tar.gz
         dest: /tmp
       register: download_snort
+      ignore_errors: true
+
+    - name: Validate download Snort
+      copy:
+          src: snort-{{snort_version}}.tar.gz
+          dest: /tmp/snort-{{snort_version}}.tar.gz
+      become: true
+      when:  download_snort.failed
+
+
 
     - name: Untar Snort
       become: yes
@@ -89,6 +102,8 @@
         src: /usr/local/bin/snort 
         dest: /usr/sbin/snort 
         state: link
+       
+
 
     - name: Create Snort group 
       become: yes
@@ -149,17 +164,17 @@
 
     - name: Copy dynamic preprocessors
       become: yes
-      synchronize:
+      copy: 
          src: /opt/snort-src/snort-{{snort_version}}/src/dynamic-preprocessors/build/usr/local/lib/snort_dynamicpreprocessor/ 
          dest: /usr/local/lib/snort_dynamicpreprocessor
-      #delegate_to: "{{ inventory_hostname }}"
+         remote_src: yes
       when: install_snort.changed
 
     - name: Snort Startup script
       become: yes
       template:
         src: "../templates/etc/init/snort.conf.j2"
-        dest: "snort.conf"
+        dest: "/etc/init.d/snort.conf"
         owner: snort
         group: snort
         mode: 0755
@@ -173,11 +188,24 @@
         group: snort
         mode: 0755
 
+    # - name: Copy service file to /etc/systemd/system
+    #   template:
+    #     src: snort.service.j2
+    #     dest: "/etc/systemd/system/snort.service"
+    #     mode: '755'
+    #   become: true
+
+    # - name: reload service daemon
+    #   command: systemctl daemon-reload
+    #   become: true
+
+
+
     - name: Validate Snort Configuration
       become: yes
-      command: "snort -T -i eth0 -c /etc/snort/snort.conf"
+      command: "snort -T -i {{ansible_default_ipv4.alias}} -c /etc/snort/snort.conf"
       register: snort_validation
-      notify: 
-      - Start Snort
+      # notify: 
+      # - Start Snort
 
     - debug: var=snort_validation verbosity=2

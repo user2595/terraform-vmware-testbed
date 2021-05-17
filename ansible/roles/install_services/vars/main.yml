@@ -6,10 +6,3 @@
 # current_service_version:      "latest"
 # current_service_group_id:     "de.dailab.de.acs.radar"
 
-
-# The URL to download Java, is the target machine does not contain Java 11 or higher
-java_download_url: https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_linux-x64_bin.tar.gz
-# The folder on the remote, where to unpack Java from the {{ java_download_url }} 
-java_location: "/opt"
-# The name of the folder created when unpacking Java from the {{ java_download_url }} 
-java_unpacked_folder_name: "jdk-13.0.2"

@@ -18,4 +18,21 @@
 	"access": {
 		"use": false
 	}
+	"ta-models-file-path": "./conf/demoThreatActorModels.json",
+    "product-classifiers-file-path": "./conf/cpeClassifiers.json",
+
+	"database" : {
+		"collection": "preproduction",
+		"class": "de.acs.prediction.database.mongo.PredictionDatabaseMongoDB",
+		"serverAddresses": [
+		  {
+			"host": "192.168.190.175",
+			"port": 27017
+		  }
+	   ], 
+	   "readPreference" : "secondary",
+	   "name": "threat-prediction",
+	   "timeout": 5000
+
+	  }
 }

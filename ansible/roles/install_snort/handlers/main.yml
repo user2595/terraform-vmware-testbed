@@ -1,6 +1,5 @@
  
     - name: Start Snort
-      become: yes
       service: 
         name: snort 
-        state: started
+        state: restarted

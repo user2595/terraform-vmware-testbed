@@ -1,0 +1,113 @@
+{
+    "apiGatewayPrefix": "http://{{ansible_user_ip}}:8787",
+    "monitoringManagerPrefix": "http://{{ansible_user_ip}}:8788",
+    "statusEndPoints": {
+        "getScannerStatus": "/rest/scanner-status"
+    },
+    "riskEndPoints": {
+        "getNetworkRisk": "/api/risk-rest-api/rest/riskValues",
+        "riskReportEndpoint": "/api/risk-rest-api/rest/latestReport",
+        "riskGenerateReport": "/api/risk-rest-api/rest/generateReport"
+    },
+    "issueTrackerEndpoints": {
+        "getDatabaseStatus": "/api/issue-tracker/database/status",
+        "getIssues": "/api/issue-tracker/issues",
+        "getIssueById": "/api/issue-tracker/issue",
+        "getIssuesScoped": "/api/issue-tracker/issues/scoped",
+        "getIssuesScopedSize": "/api/issue-tracker/issues/scoped/size",
+        "updateIssues": "/api/issue-tracker/issues/update"
+    },
+    "attackGraphEndPoints": {
+        "hostAttackGraphEndpoint": "/api/attack-graph/hostGraph",
+        "networkAttackGraphFromCveIdEndpoint": "/api/attack-graph/completeGraph"
+    },
+    "monitoringEndPoints": {
+        "getProjectUpdateState": "/rest/get-project-update-state",
+        "lastScanResult": "/rest/last-scan-result",
+        "startMonitoring": "/rest/start-monitoring",
+        "getCurrentProjectConfiguration": "/rest/get-project-config",
+        "stopMonitoring": "/rest/stop"
+    },
+    "vulnerabilityEndPoints": {
+        "allProductVulnerabilities": "/api/kb/products/fast",
+        "productVulnerabilities": "/api/kb/product/fast",
+        "getDescriptionById": "/api/kb/ids",
+        "getVulnerabilityDescriptionById": "/api/kb/id",
+        "triggerDatabaseUpdate": "/api/kb-update/service/update",
+        "getStatus": "/api/kb-update/service/status",
+        "getSettings": "/api/kb-update/service/config",
+        "setSettings": "/api/kb-update/service/config"
+    },
+    "trafficEndPoints": {
+        "trafficAlerts": "/api/snort-alerts/alerts",
+        "randomAlerts": "/api/snort-alerts/randomAlerts"
+    },
+    "predictionEndPoints": {
+        "getPrediction": "/api/mtp/prediction",
+        "requestHostsWithCve": "/api/mtp/hosts"
+    },
+    "aiPredictionEndpoints": {
+        "requestAIPrediction": "/api/prediction/getMockedPrediction",
+        "getThreatActorGoals": "/api/prediction/service/get-threat-actor-goals",
+        "getThreatActorModels": "/api/prediction/service/get-threat-actor-models",
+        "requestThreatPrediction": "/api/prediction/service/start-prediction",
+        "requestThreatPredictionProgresses": "/api/prediction/service/get-predictions-progress",
+        "requestThreatPredictionResult": "/api/prediction/service/get-prediction"
+    },
+    "databases": {
+        "issue-tracker": {
+            "collection": "issues"
+                    },
+        "threat-prediction": {
+            "collection": "prediction"
+       
+        }
+    },
+    "demoTimeDelay": 10000,
+    "viewsEnabled": {
+        "dashboard": true,
+        "countermeasures": true,
+        "topology": true,
+        "logAnalysis": true,
+        "prediction": true,
+        "aiPrediction": true,
+        "trafficAnalysis": true,
+        "monitoringProjects": true,
+        "about": true,
+        "threatPrediction": true
+    },
+    "scannersEnabled": {
+        "applicationScanner": true,
+        "nmapScanner": true,
+        "openVASScanner": true,
+        "checkMKScanner": true
+    },
+    "topologyViewComponentsEnabled": {
+        "attackGraph": true,
+        "productsTable": true,
+        "vulnerabilitiesTable": true
+    },
+    "trafficViewConfiguration": {
+        "useRandomAlerts": true
+    },
+    "demoNetworksEnabled": {
+        "demoDefault": true,
+        "demoOpenVas": true,
+        "demoShowroom": true,
+        "demoHomeNetwork": true,
+        "demoWorkNetwork": true,
+        "demoMinuv2Network": true
+    },
+    "infoVideoUrl": "",
+    "authentication": {
+        "use": "",
+        "": {
+            "url": "https://10.0.2.21:8443/auth",
+            "realm": "ACes",
+            "clientId": "account",
+            "credentials": {
+                "secret": "3bb68002-8bc7-4241-a82c-0edf3b8d466e"
+            }
+        }
+    }
+}

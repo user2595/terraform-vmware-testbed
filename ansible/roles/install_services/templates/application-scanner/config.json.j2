@@ -2,20 +2,20 @@
   "service": {
     "name": "application-scanner",
     "host": "{{ ansible_user_ip }}",
-    "port": 8793
+    "port": 8792
   },
   "monitoring-manager": {
-    "port": 80,
+    "port": 8788,
     "host":  "{{ ansible_user_ip }}"
   },
   "metrics": {
     "enabled": true,
-    "metrics.port": 8906
+    "metrics.port": 8905
   },
   "monitoring.data.source": {
     "isParser": false,
     "useSubnetInfo": true
   },
-  "publishURL": "/cosy/production-dai-internal/monitoring-manager/rest/publish/:service",
-  "unpublishURL": "/cosy/production-dai-internal/monitoring-manager/rest/unpublish/:service"
+  "publishURL": "/rest/publish/:service",
+  "unpublishURL": "/rest/unpublish/:service"
 }

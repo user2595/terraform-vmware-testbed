@@ -14,14 +14,23 @@
     {
       "class": "de.acs.kb.feed.nvd.NVDFeed",
 	  "url": "file:/opt/acs.kb.services/conf/",
-	  "file": "nvdcve-1.0-2019"
+	  "file": "nvdcve-1.0-2019",  
+    "database": {
+             "class": "de.acs.kb.database.mongo.MongoVulnerabilityDatabase",
+          "serverAddresses": [
+           {
+             "host": "{{ ansible_user_ip }}",
+             "port": 27017
+           }
+        ],
+        "name": "vulnerabilities",
+        "collection": "nvd"
+
+    }
     }
   ],
  
-  "data-feeds": [
- 
-  
-  ],
+
   "ssl": {
     "use": false
   },

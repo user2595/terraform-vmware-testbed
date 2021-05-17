@@ -63,8 +63,8 @@ experiment_0 = {
   host                  = "vsphere12.dai-lab.de"
   out_attack            = data.vsphere_network.out_attack.id
   out_control           = data.vsphere_network.out_attack.id 
-  creat_attack_network  = true
-  creat_control_network = true
+  creat_attack_network  = false
+  creat_control_network = false
   maschinen             = local.vm_experiment_0
   }
 prefix_nexus_releases = "https://repositories.dai-labor.de/extern/repository/acs-releases/"
@@ -110,23 +110,23 @@ component_version = {
 #   use_static_mac = true
 
 # },
-{
-  template = var.template_attacker
-  username = var.kali_username
-  out_attack = true
-  out_control = false
-  attack_network = true
-  control_network = false
-  network_waiter = true
-  use_static_mac = true
-},
+# {
+#   template = var.template_attacker
+#   username = var.kali_username
+#   out_attack = true
+#   out_control = false
+#   attack_network = true
+#   control_network = false
+#   network_waiter = true
+#   use_static_mac = true
+# },
 {
   template = var.template_control
   username = var.linux_username
   out_attack = false
   out_control = true
   attack_network = false
-  control_network = true
+  control_network = false
   network_waiter = true
    use_static_mac = true
  },
