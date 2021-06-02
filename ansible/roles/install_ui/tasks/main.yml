@@ -5,11 +5,11 @@
         path: /var/www/html
         state: absent
       become: yes
-
     - name: fetch UI from sftp server 
-      shell: sshpass -p 'password1'  sftp -o StrictHostKeyChecking=accept-new -r sftp_reader@192.168.190.158:/upload/angularUI/angularUI_latest.tar.gz /opt
+      shell: sshpass -p "0?W9&QKk{{7" sftp -o StrictHostKeyChecking=accept-new -r sftp_reader@192.168.190.152:/upload/angularUI/angularUI_latest.tar.gz /opt
       become: yes
     
+
     - name: Unarchive UI 
       unarchive:
         src: /opt/angularUI_latest.tar.gz
@@ -33,7 +33,8 @@
 
     - name: Replace  localhost whit host-ip in UI config-file
       replace:
-        path:         regexp: 'localhost'
+        path: /var/www/html/assets/config/config.json        
+        regexp: 'localhost'
         replace:  "{{ansible_user_ip}}"
       become: yes
 

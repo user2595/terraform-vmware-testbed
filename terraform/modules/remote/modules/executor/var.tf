@@ -7,8 +7,7 @@ variable "connection_type" {default = "ssh"}
 ##########################################################################
 ############ remote-exec ##################################################
 ##########################################################################
-variable "remote_exec_command" {default = [ "sudo apt install python3 python3-pip sshpass -y ;", 
-                                            "sudo pip3 install ansible lxml"] }
+variable "remote_exec_command" {default = "sudo apt-get install python3 python3-pip sshpass -y && sudo pip3 install lxml "  }
 ##################################################################### #####
 ############ local-exec ##################################################
 ##########################################################################

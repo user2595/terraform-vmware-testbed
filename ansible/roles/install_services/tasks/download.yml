@@ -7,8 +7,8 @@
           extension: zip 
           mode:  '555'
           timeout: 30
-          username: moussa
-          password: Sonne21§
+          username: acs-read
+          password: EN29f7KbN5pYpD6U
           version: "{{current_service_version}}"
           dest: "{{ current_service_location }}/{{ current_service_dir_name }}.zip"
       

@@ -46,9 +46,9 @@
     - name: Untar DAQ
       become: yes
       unarchive: src=/tmp/daq-{{daq_version}}.tar.gz
-                 dest=/opt/snort-src
+                 dest=/opt/snort-src/
                  copy=no
-      when: download_daq.changed
+      #when: download_daq.changed
       register: untar_daq
 
     - name: Configure DAQ
@@ -60,7 +60,10 @@
       - "./configure"
       - "/usr/bin/make"
       - "/usr/bin/make install"
-      when: untar_daq.changed    
+      #when: untar_daq.changed    
+    
+    
+    
     - name: Download Snort
       get_url: 
         url: https://snort.org/downloads/snort/snort-{{snort_version}}.tar.gz
@@ -82,7 +85,7 @@
       unarchive: src=/tmp/snort-{{snort_version}}.tar.gz
                  dest=/opt/snort-src
                  copy=no
-      when: download_snort.changed
+      #when: download_snort.changed
       register: untar_snort
 
     - name: Install Snort
@@ -93,7 +96,7 @@
       - "/usr/bin/make"   
       - "/usr/bin/make install"
       - "ldconfig"
-      when: untar_snort.changed
+      #when: untar_snort.changed
       register: install_snort
 
     - name: Create Snort symlink
@@ -102,6 +105,7 @@
         src: /usr/local/bin/snort 
         dest: /usr/sbin/snort 
         state: link
+        
        
 
 
@@ -147,7 +151,7 @@
       - rules/iplists/white_list.rules
       - rules/local.rules
       - sid-msg.map
-      when: dir_created.changed
+      #when: dir_created.changed
 
     - name: Copy Config files and dynamic preprocessors
       become: yes
@@ -160,7 +164,7 @@
       - unicode.map
       - gen-msg.map
       - attribute_table.dtd
-      when: install_snort.changed 
+      #when: install_snort.changed 
 
     - name: Copy dynamic preprocessors
       become: yes
@@ -168,7 +172,7 @@
          src: /opt/snort-src/snort-{{snort_version}}/src/dynamic-preprocessors/build/usr/local/lib/snort_dynamicpreprocessor/ 
          dest: /usr/local/lib/snort_dynamicpreprocessor
          remote_src: yes
-      when: install_snort.changed
+      #when: install_snort.changed
 
     - name: Snort Startup script
       become: yes
