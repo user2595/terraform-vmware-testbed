@@ -1,0 +1,39 @@
+---
+  - name: Git clone git://github.com/aabc/pkt-netflow.git
+    git:
+      repo: 'git://github.com/aabc/pkt-netflow.git'
+      dest: /home/master
+
+  - name: Change directory
+    shell: cd /home/master/pkt-netflow
+
+  - name: Install module-assistant
+    apt:
+      name: module-assistant
+    become: yes
+
+  - name: Prepare module-assistant
+    shell: m-a prepare
+    become: yes
+
+  - name: Install snmpd
+    apt:
+      name: snmpd
+    become: yes
+
+  - name: Install libsnmp-dev
+    apt:
+      name: libsnmp-dev
+    become: yes
+
+  - name: Configure module
+    shell: ./configure
+    become: yes
+
+  - name: Make module
+    shell: make all install
+    become: yes
+
+  - name: Apply changes
+    shell: depmod
+    become: yes
