@@ -2,10 +2,7 @@
   - name: Git clone git://github.com/aabc/pkt-netflow.git
     git:
       repo: 'git://github.com/aabc/pkt-netflow.git'
-      dest: /home/master
-
-  - name: Change directory
-    shell: cd /home/master/pkt-netflow
+      dest: /home/master/pkt-netflow
 
   - name: Install module-assistant
     apt:
@@ -28,12 +25,18 @@
 
   - name: Configure module
     shell: ./configure
+    args:
+      chdir: /home/master/pkt-netflow
     become: yes
 
   - name: Make module
     shell: make all install
+    args:
+      chdir: /home/master/pkt-netflow
     become: yes
 
   - name: Apply changes
     shell: depmod
+    args:
+      chdir: /home/master/pkt-netflow
     become: yes

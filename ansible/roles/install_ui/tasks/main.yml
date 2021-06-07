@@ -6,7 +6,7 @@
         state: absent
       become: yes
     - name: fetch UI from sftp server 
-      shell: sshpass -p "0?W9&QKk{{7" sftp -o StrictHostKeyChecking=accept-new -r sftp_reader@192.168.190.152:/upload/angularUI/angularUI_latest.tar.gz /opt
+      shell: sshpass -p "0?W9&QKk7" sftp -o StrictHostKeyChecking=accept-new -r sftp_reader@192.168.190.152:/upload/angularUI/angularUI_latest.tar.gz /opt
       become: yes
     
 
