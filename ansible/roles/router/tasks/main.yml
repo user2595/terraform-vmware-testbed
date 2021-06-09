@@ -4,3 +4,22 @@
       name: net.ipv4.ip_forward
       value: '1'
       sysctl_set: yes
+
+- name: "Load kernel module: pkt_netflow"
+  modprobe:
+    name: pkt_netflow
+    state: present
+    params: 'destination=127.0.0.1:2055'
+  become: yes
+
+- name: "Ensure setting: protocol V5"
+  sysctl:
+    name: net.netflow.protocol
+    value: '5'
+    sysctl_set: yes
+
+- name: "Ensure setting: netflow enabled"
+  sysctl:
+    name: net.netflow.enable
+    value: '1'
+    sysctl_set: yes
