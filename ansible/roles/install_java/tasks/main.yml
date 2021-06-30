@@ -9,6 +9,12 @@
     mode: 555 
     owner: "{{ansible_user_name}}"
 
+- name: Install python-apt
+  apt:
+    name: python-apt
+    state: present
+
+
 
 - name: install unzip tool on Ubuntu / Debian via apt
   apt:

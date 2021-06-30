@@ -4,12 +4,12 @@
   become: yes
   remote_user: "{{ ansible_user_name }}"
   roles:
-    #- install_pkt-netflow
     - install_java
-    - install_ui
-    - install_nmap
-    - install_snort
-    - install_mongodb
+    # - install_apache
+    # - install_ui
+    # - install_nmap
+    # - install_snort
+    # - install_mongodb
     - role: install_services
       current_service_name:         "api-gateway" 
       current_service_location:     "/opt"

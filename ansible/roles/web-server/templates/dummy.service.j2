@@ -1,0 +1,8 @@
+[Unit]
+Description= simple webservice to creat network traffic
+
+[Service]
+WorkingDirectory=/opt
+ExecStart=/usr/bin/python3 dummy-web.server.py 3000
+Restart=on-failure
+RestartSec=5

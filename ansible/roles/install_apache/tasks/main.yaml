@@ -1,0 +1,64 @@
+- name: Install prerequisites
+  apt: 
+    name: "{{ item }}" 
+    update_cache: yes 
+    state: latest 
+    force_apt_get: yes
+  loop: [ 'aptitude' ]
+  become: yes
+
+- name: Install Apache
+  apt: 
+    name: apache2 
+    update_cache: yes 
+    state: latest
+  become: yes
+
+- name: Create document root
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: "{{ ansible_user_name }}"
+    mode: '0755'
+  become: yes
+    
+- name: Copy index test page
+  template:
+    src: "files/index.html.j2"
+    dest: "/var/www/{{ http_host }}/index.html"
+  become: yes
+  
+- name: Set up Apache virtualhost
+  template:
+    src: "files/apache.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+  become: yes
+
+- name: Enable new Header 
+  apache2_module:
+    state: present
+    name: headers
+  become: yes 
+
+- name: Enable new site
+  shell: /usr/sbin/a2ensite {{ http_conf }}
+  become: yes
+  notify: Reload Apache
+
+- name: Disable default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  become: yes
+  when: disable_default
+  notify: Reload Apache
+
+- name: "UFW - Allow HTTP on port {{ http_port }}"
+  ufw:
+    rule: allow
+    port: "{{ http_port }}"
+    proto: tcp
+  become: yes
+  notify: Restart Apache
+
+
+    
+

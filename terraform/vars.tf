@@ -35,6 +35,11 @@ variable "template_MinUv1"                      {default = "MinUv1"}
 variable "template_linux"                       {default = "linux"} 
 variable "template_securtiyOnion"               {default = "securtiyOnion"} 
 variable "template_windows-10"                  {default = "windows-10"} 
+variable "template_eHealth_router"              {default = "eHealth_router"}
+variable "template_eHealth_non_Sensitive"       {default = "eHealth_non_Sensitive_D"}
+variable "template_eHealth_Sensitive"           {default = "eHealth_Sensitive_D"}
+variable "template_web_target_malicious"        {default = "web_target_malicious"}
+variable "template_web_target_bening"           {default = "web_target_bening"}
 ##########################################################################
 ############ Usernames ###############################################
 ##########################################################################
@@ -42,6 +47,7 @@ variable "linux_username"                       {default = "master"}
 variable "kali_username"                        {default = "kalivm"} 
 variable "securtiyOnion_username"               {default = "zwiebel"} 
 variable "windows_username"                     {default = "windows-1"} 
+variable "eHealth_username"                     {default = "master"}
 ##########################################################################
 ############ experiments ###############################################
 ##########################################################################

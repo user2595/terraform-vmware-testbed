@@ -1,15 +1,19 @@
 ---
-    - name: downlaod soruce from nexus
-      maven_artifact:
-          group_id: "{{current_service_group_id}}"
-          artifact_id: "{{ current_service_dir_name }}"
-          repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'
-          extension: zip 
-          mode:  '555'
-          timeout: 30
-          username: acs-read
-          password: EN29f7KbN5pYpD6U
-          version: "{{current_service_version}}"
-          dest: "{{ current_service_location }}/{{ current_service_dir_name }}.zip"
-      
-      
+  - name: Install lxml python package
+    pip: 
+      name: lxml
+
+  - name: download source from nexus
+    maven_artifact:
+      group_id: "{{current_service_group_id}}"
+      artifact_id: "{{ current_service_dir_name }}"
+      repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'    # 'https://repositories.dai-labor.de/extern/repository/acs-releases/'
+      extension: zip 
+      mode:  '555'
+      timeout: 30
+      username: acs-read
+      password: EN29f7KbN5pYpD6U
+      version: "{{current_service_version}}"
+      dest: "{{ current_service_location }}/{{ current_service_dir_name }}.zip"
+    
+    
