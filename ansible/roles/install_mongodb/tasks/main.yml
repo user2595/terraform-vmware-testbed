@@ -36,8 +36,7 @@
     owner: mongodb 
     group: mongodb 
     recurse: yes
-  notify:
-   - restart mongodb
+ 
 - name: Change file ownership and group 
   become: yes
   file: 
@@ -46,15 +45,10 @@
     group: mongodb
     state: touch
   notify:
-   - restart mongodb
+   - restart mongod
 
 
-
-#TODO chown -R :mongodb 
-#TODO chown mongodb:mongodb 
-#TODO notify: - restart mongodb
-
-
+ 
 
 
 # - name: create /etc/security/limits.d/mongodb.conf

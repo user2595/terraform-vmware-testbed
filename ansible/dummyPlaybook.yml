@@ -5,11 +5,11 @@
   remote_user: "{{ ansible_user_name }}"
   roles:
     - install_java
-    # - install_apache
-    # - install_ui
-    # - install_nmap
-    # - install_snort
-    # - install_mongodb
+    - install_apache
+    - install_ui
+    - install_nmap_omp
+    - install_snort
+    - install_mongodb
     - role: install_services
       current_service_name:         "api-gateway" 
       current_service_location:     "/opt"
@@ -21,6 +21,13 @@
       current_service_name:         "kb"
       current_service_location:     "/opt"
       current_service_dir_name:     "acs.kb.services"
+      current_service_description:  "Cosy Kb-Server Master Version"
+      current_service_version:      "latest"
+      current_service_group_id:     "de.acs.radar"
+    - role: install_services
+      current_service_name:         "kb-update"
+      current_service_location:     "/opt"
+      current_service_dir_name:     "acs.kb.update"
       current_service_description:  "Cosy Kb-Server Master Version"
       current_service_version:      "latest"
       current_service_group_id:     "de.acs.radar"
@@ -98,13 +105,6 @@
       current_service_name:         "snort-alerts"
       current_service_location:     "/opt"
       current_service_dir_name:     "acs.snort.backend"
-      current_service_description:  "Cosy snort backend service Master Version"
-      current_service_version:      "latest"
-      current_service_group_id:     "de.acs.cosy"
-    - role: install_services
-      current_service_name:         "ti"
-      current_service_location:     "/opt"
-      current_service_dir_name:     "acs.ti.service"
       current_service_description:  "Cosy snort backend service Master Version"
       current_service_version:      "latest"
       current_service_group_id:     "de.acs.cosy"

@@ -1,7 +1,4 @@
 ---
-# - name: populate service facts
-#   service_facts:
-
 - name: Stop old artifact service
   vars: 
     service_name: "{{ current_service_name }}.service"

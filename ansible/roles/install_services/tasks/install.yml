@@ -37,7 +37,7 @@
   template:
     src: "{{current_service_name}}/config.json.j2"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/config.json"
-    mode: '440'
+    mode: '555'
   become: true
 
 
@@ -45,7 +45,7 @@
   template:
     src: "{{current_service_name}}/random"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/random"
-    mode: '440'
+    mode: '555'
   become: true
   when:  current_service_name == "snort-alerts"
  
@@ -53,7 +53,7 @@
   template:
     src: "{{current_service_name}}/empty"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/empty"
-    mode: '440'
+    mode: '555'
   become: true
   when:  current_service_name == "snort-alerts"
 
@@ -63,7 +63,7 @@
   template:
     src: "{{current_service_name}}/cpeClassifiers.json.j2"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/cpeClassifiers.json"
-    mode: '440'
+    mode: '555'
   become: true
   when:  current_service_name == "prediction"
  
@@ -71,26 +71,26 @@
   template:
     src: "{{current_service_name}}/demoThreatActorModels.json.j2"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/demoThreatActorModels.json"
-    mode: '440'
+    mode: '555'
   become: true
   when:  current_service_name == "prediction"
 
 
 - name: Copy nvdcve-1.0-2019.meta to  verticle kb 
   template:
-    src: "{{current_service_name}}/nvdcve-1.0-2019.meta"
+    src: "kb/nvdcve-1.0-2019.meta"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.meta"
-    mode: '440'
+    mode: '555'
   become: true
-  when:  current_service_name == "kb"
+  when:  current_service_name == "kb" or current_service_name == "kb-update"
 
 - name: copy nvdcve-1.0-2019.zib tp verticle kb 
   copy:
     src: "nvdcve-1.0-2019.json.zip"
     dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.json.zip"
-    mode: '440'
+    mode: '555'
   become: true
-  when:  current_service_name == "kb"
+  when:  current_service_name == "kb" or current_service_name == "kb-update"
 
 - name: Replace build artifact start.sh file to enable running with java versions other thad adopt-open-jdk 12
   copy:

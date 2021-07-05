@@ -107,8 +107,6 @@
         state: link
         
        
-
-
     - name: Create Snort group 
       become: yes
       group: name=snort state=present 
@@ -151,7 +149,7 @@
       - rules/iplists/white_list.rules
       - rules/local.rules
       - sid-msg.map
-      #when: dir_created.changed
+      when: dir_created.changed
 
     - name: Copy Config files and dynamic preprocessors
       become: yes
@@ -164,7 +162,7 @@
       - unicode.map
       - gen-msg.map
       - attribute_table.dtd
-      #when: install_snort.changed 
+      when: install_snort.changed 
 
     - name: Copy dynamic preprocessors
       become: yes
@@ -172,16 +170,8 @@
          src: /opt/snort-src/snort-{{snort_version}}/src/dynamic-preprocessors/build/usr/local/lib/snort_dynamicpreprocessor/ 
          dest: /usr/local/lib/snort_dynamicpreprocessor
          remote_src: yes
-      #when: install_snort.changed
+      when: install_snort.changed
 
-    - name: Snort Startup script
-      become: yes
-      template:
-        src: "../templates/etc/init/snort.conf.j2"
-        dest: "/etc/init.d/snort.conf"
-        owner: snort
-        group: snort
-        mode: 0755
 
     - name: Configuring Snort
       become: yes
@@ -192,16 +182,16 @@
         group: snort
         mode: 0755
 
-    # - name: Copy service file to /etc/systemd/system
-    #   template:
-    #     src: snort.service.j2
-    #     dest: "/etc/systemd/system/snort.service"
-    #     mode: '755'
-    #   become: true
+    - name: Copy service file to /etc/systemd/system
+      template:
+        src: snort.service.j2
+        dest: "/etc/systemd/system/snort.service"
+        mode: '755'
+      become: true
 
-    # - name: reload service daemon
-    #   command: systemctl daemon-reload
-    #   become: true
+    - name: reload service daemon
+      command: systemctl daemon-reload
+      become: true
 
 
 
@@ -209,7 +199,7 @@
       become: yes
       command: "snort -T -i {{ansible_default_ipv4.alias}} -c /etc/snort/snort.conf"
       register: snort_validation
-      # notify: 
-      # - Start Snort
+      notify: 
+       - Start Snort
 
     - debug: var=snort_validation verbosity=2

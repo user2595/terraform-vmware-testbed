@@ -1,8 +1,0 @@
----
-# current_service_name:         "api-gateway"
-# current_service_location:     "/opt"
-# current_service_dir_name:     "acs.common.api.gateway"
-# current_service_description:  "Cosy Application Scanner Master Version"
-# current_service_version:      "latest"
-# current_service_group_id:     "de.dailab.de.acs.radar"
-

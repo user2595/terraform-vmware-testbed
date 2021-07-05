@@ -1,19 +1,11 @@
 [Unit]
-Description=Snort NIDS Service
-Documentation=man:systemd-sysv-generator(8)
-SourcePath=/etc/init.d/snort.conf
+Description=Snort NIDS Daemon
+
 
 [Service]
-Type=forking
-Restart=no
-TimeoutSec=5min
-IgnoreSIGPIPE=no
-KillMode=process
-GuessMainPID=no
-RemainAfterExit=yes
-ExecStart=/bin/bash /etc/init.d/snort.conf start
-ExecStop=/bin/bash /etc/init.d/snort.conf stop
+Type=simple
+ExecStart=/usr/local/bin/snort -q -u snort -g snort -c /etc/snort/snort.conf -i {{ansible_default_ipv4.alias}}
+Restart=on-failure
+RestartSec=5
 
 
-[Install]
-WantedBy=multi-user.target

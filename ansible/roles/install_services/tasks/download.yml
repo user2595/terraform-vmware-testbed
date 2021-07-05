@@ -7,12 +7,12 @@
     maven_artifact:
       group_id: "{{current_service_group_id}}"
       artifact_id: "{{ current_service_dir_name }}"
-      repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'    # 'https://repositories.dai-labor.de/extern/repository/acs-releases/'
+      repository_url: 'https://repositories.dai-labor.de/extern/repository/acs-releases/'    
       extension: zip 
       mode:  '555'
       timeout: 30
       username: acs-read
-      password: EN29f7KbN5pYpD6U
+      password: {{acs-read}}
       version: "{{current_service_version}}"
       dest: "{{ current_service_location }}/{{ current_service_dir_name }}.zip"
     

@@ -6,7 +6,7 @@
   file: 
     path: /opt/logs 
     state: directory
-    mode: 555 
+    mode: 755 
     owner: "{{ansible_user_name}}"
 
 - name: Install python-apt

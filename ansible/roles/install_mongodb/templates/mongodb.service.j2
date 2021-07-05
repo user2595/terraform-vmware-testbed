@@ -1,0 +1,9 @@
+[Unit]
+Description=MongoDB Database Server
+
+[Service]
+ExecStart=/usr/bin/mongod --config /etc/mongod.conf
+Restart=on-failure
+User=mongodb
+Group=mongodb
+RestartSec=5
