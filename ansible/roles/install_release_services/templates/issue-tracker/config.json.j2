@@ -1,0 +1,26 @@
+{
+  "service": {
+    "name": "issue-tracker",
+    "host": "{{ ansible_user_ip }}",
+    "port": 8798
+  },
+  "api-gateway": {
+    "port": 8787,
+    "host": "{{ ansible_user_ip }}"
+  },
+  "metrics": {
+    "enabled": true,
+    "port": 8911
+  },
+  "database": {
+    "class": "de.acs.issue.tracker.database.mongo.MongoIssueDatabase",
+    "serverAddresses": [
+      {
+        "host": "{{ ansible_user_ip }}",
+        "port": 27017
+      }
+    ],
+    "name": "issues",
+    "timeout": 5000
+  }
+}

@@ -23,7 +23,7 @@ variable "vsphere_resource_pool"                {default= "Testbed"}
 variable "vsphere_cluster"                      {default= "UCS"}
 variable "vsphere_host_name"                    {default="vsphere7.dai-lab.de"}
 variable "vsphere_out_attack"                   {default= "SEC_Testbed_Uplink" }
-//variable "vsphere_out_control"                {default= "" }
+variable "vsphere_out_control"                  {default= "SEC_Testbed_Uplink" }
 ##########################################################################
 ############ Templates ###############################################
 ##########################################################################
@@ -58,53 +58,34 @@ variable"experiment_2"                          {default ="experiment_2" }
 ############ experments Parameter ###############################################
 ##########################################################################
 locals { 
+
+##############################################################################################  
+//variables currently not in use 
+############################################################################################## 
+  prefix_nexus_releases = "https://repositories.dai-labor.de/extern/repository/acs-releases/"
+  prefix_nexus_snapshot = "https://repositories.dai-labor.de/extern/repository/acs-snapshot/"
+  version_radar         = "3.7.5"
+  version_common        = "4.0.3"
+  version_issu_tracker  = "2.0.2"
+  version_cosy          = "4.0.5"
+##############################################################################################  
+##############################################################################################
+  
   config = {
-              datacenter= data.vsphere_datacenter.dc.id
-              datastore= data.vsphere_datastore.datastore.id
-              resource_pool=data.vsphere_resource_pool.pool.id
-              cluster=data.vsphere_compute_cluster.cluster.id           
-}
-experiment_0 = {
-  name                  = "experiment_1"
-  host                  = "vsphere12.dai-lab.de"
-  out_attack            = data.vsphere_network.out_attack.id
-  out_control           = data.vsphere_network.out_attack.id 
-  creat_attack_network  = false
-  creat_control_network = false
-  maschinen             = local.vm_experiment_0
+    datacenter          = data.vsphere_datacenter.dc.id
+    datastore           = data.vsphere_datastore.datastore.id
+    resource_pool       = data.vsphere_resource_pool.pool.id
+    cluster             = data.vsphere_compute_cluster.cluster.id        
+    out_attack          = data.vsphere_network.out_attack.id
+    out_control         = data.vsphere_network.out_control.id    
   }
-prefix_nexus_releases = "https://repositories.dai-labor.de/extern/repository/acs-releases/"
-prefix_nexus_snapshot = "https://repositories.dai-labor.de/extern/repository/acs-snapshot/"
-version_radar         = "3.7.5"
-version_common        = "4.0.3"
-version_issu_tracker  = "2.0.2"
-version_cosy          = "4.0.5"
-
-component_version = {
-  //radar
-  "acs.kb.services"                     = "3.7.5" // 	de/dailab/acs/radar/  /3.7.5/acs.kb.services-3.7.5.zip
-  "acs.monitoring.application.scanner"  = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.application.scanner/3.7.5/acs.monitoring.application.scanner-3.7.5.zip
-  "acs.monitoring.asset"                = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.asset/3.7.5/acs.monitoring.asset-3.7.5.zip 
-  "acs.monitoring.checkmk"              = "3.7.5" // 	de/dailab/acs/radar/acs.monitoring.checkmk/3.7.5/acs.monitoring.checkmk-3.7.5.zip
-  "acs.monitoring.manager"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.manager/3.7.5/acs.monitoring.manager-3.7.5.zip
-//https://repositories.dai-labor.de/extern/repositoryde/acs/radar/acs.monitoring.manager/maven-metadata.xml"  
-  "acs.monitoring.nmap"                 = "3.7.5" //de/dailab/acs/radar/acs.monitoring.nmap/3.7.5/acs.monitoring.nmap-3.7.5.zip
-  "acs.monitoring.openvas"              = "3.7.5" // de/dailab/acs/radar/acs.monitoring.openvas/3.7.5/acs.monitoring.openvas-3.7.5.zip
-  "acs.risk.service"                    = "3.7.5" //de/dailab/acs/radar/acs.risk.service/3.7.5/acs.risk.service-3.7.5.zip
-  //issu-tracker
-  "acs.filter.vulnerability"            ="2.0.2"  //de/acs/issue/tracker/acs.filter.vulnerability/2.0.2/acs.filter.vulnerability-2.0.2.zip
-  "acs.issue.tracker.service"           ="2.0.2"  //de/acs/issue/tracker/acs.issue.tracker.service/2.0.2/acs.issue.tracker.service-2.0.2.zip
-//common
-//	de/acs/common/acs.common.api.gateway/4.0.3/acs.common.api.gateway-4.0.3.zip
-//cosy
-// de/acs/cosy/acs.attack.graph.service/4.0.5/acs.attack.graph.service-4.0.5.zip
-// de/acs/cosy/acs.mtp.service/4.0.5/acs.mtp.service-4.0.5.zip
-// de/acs/cosy/acs.prediction.service/4.0.5/acs.prediction.service-4.0.5.zip
-// de/acs/cosy/acs.snort.backend/4.0.5/acs.snort.backend-4.0.5.zip
-//	de/acs/cosy/acs.ti.service/4.0.5/acs.ti.service-4.0.5.zip
-}
-
- vm_experiment_0 = [
+  
+  experiment_0_name                  = "experiment_1"
+  experiment_0_host                  = "vsphere12.dai-lab.de"
+  experiment_0_creat_attack_network  = false
+  experiment_0_creat_control_network = false
+                 
+  experiment_0_maschinen = [
 # {
 #   template = var.template_dhcp
 #   username = var.linux_username
@@ -173,11 +154,7 @@ component_version = {
 #   network_waiter = false
 #   use_static_mac = false
 # },
-
 ]
-
-
- 
 }
 
 

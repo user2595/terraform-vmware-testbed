@@ -1,0 +1,27 @@
+{
+	"service" : {
+		"name" : "nmap-service",
+		"host" : "{{ ansible_user_ip }}",
+		"port" : 8789
+	},
+	"monitoring-manager" : {
+		"port": 8788,
+		"host": "{{ ansible_user_ip }}"
+	},
+	"metrics" : {
+		"enabled": true,
+		"port": 8902
+	},
+	"monitoring.data.source": {
+		"isParser": false,
+		"useSubnetInfo": true
+	},
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	},
+	"publishURL": "/rest/publish/:service",
+	"unpublishURL": "/rest/unpublish/:service"
+}

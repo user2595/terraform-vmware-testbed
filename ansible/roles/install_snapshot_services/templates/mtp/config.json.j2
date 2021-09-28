@@ -1,0 +1,31 @@
+{
+  "service" : {
+    "name" : "mtp",
+    "host" : "{{ ansible_user_ip }}",
+    "port" : 8801
+  },
+  "kb-data": {
+    "service-name": "kb",
+    "endpoint": "/products/fast"
+  },
+  "api-gateway" : {
+    "port": 8787,
+    "host": "{{ ansible_user_ip }}"
+  },
+  "metrics" : {
+    "enabled": true,
+    "port": 8915
+  },
+  "ssl": {
+    "use": false
+  },
+  "access": {
+    "use": false
+  },
+  "issue-connector": {
+    "database" : {
+      "collection": "mtp"
+
+    }
+  }
+}

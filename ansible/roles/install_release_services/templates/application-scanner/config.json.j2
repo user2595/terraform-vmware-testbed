@@ -1,0 +1,21 @@
+{
+  "service": {
+    "name": "application-scanner",
+    "host": "{{ ansible_user_ip }}",
+    "port": 8792
+  },
+  "monitoring-manager": {
+    "port": 8788,
+    "host":  "{{ ansible_user_ip }}"
+  },
+  "metrics": {
+    "enabled": true,
+    "metrics.port": 8905
+  },
+  "monitoring.data.source": {
+    "isParser": false,
+    "useSubnetInfo": true
+  },
+  "publishURL": "/rest/publish/:service",
+  "unpublishURL": "/rest/unpublish/:service"
+}

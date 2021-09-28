@@ -1,0 +1,30 @@
+{
+	"service" : {
+		"name" : "ti",
+		"host" : "{{ ansible_user_ip }}",
+		"port" : 8800,
+		"updateInterval" : 24
+	},
+	"api-gateway" : {
+		"port": 8787,
+		"host": "{{ ansible_user_ip }}"
+	},
+	"metrics" : {
+		"enabled": true,
+		"port": 8913
+	},
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	},
+    "feeds": [
+	  {
+	    "class" : "de.acs.ti.feed.misp.MISPTIFeed",
+		"name": "misp",
+		"host": "10.0.2.139",
+		"authorization": "eTq1Pmucc7XewSBWnJptKUxBw7Zey3Pu2AhxtzkQ"
+	  }
+    ]
+}

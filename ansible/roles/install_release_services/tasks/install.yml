@@ -1,0 +1,134 @@
+---
+- name: Install lxml python package
+  pip: 
+    name: lxml
+  register: lxml_present
+  when: lxml_present is not defined
+
+- name: Unpack build artifact to remote
+  unarchive:
+    remote_src: yes
+    src: "{{ current_service_location }}/{{current_service_dir_name}}.zip" 
+    dest: "{{ current_service_location }}"
+    mode: '555'
+  become: yes
+
+- name: Remove archive file (delete file)
+  ansible.builtin.file:
+    path: "{{ current_service_location }}/{{current_service_dir_name}}.zip"
+    state: absent
+  become: yes
+
+- name: "Rename unpacked artifact folder to {{ current_service_dir_name }}"
+  shell:
+    cmd: "ls | grep {{current_service_dir_name}} | xargs -I{} mv {} {{ current_service_dir_name }}"
+    chdir: "{{ current_service_location }}"
+  become: yes
+
+- name: "Change ownership of {{ current_service_dir_name }} folder"
+  file:
+    path: "{{ current_service_location }}/{{ current_service_dir_name }}"
+    owner: "{{ ansible_user_name }}"
+    group: "{{ ansible_user_name }}"
+    recurse: true
+  become: yes
+
+- name: Replace build artifact verticle logback.xml file
+  template:
+    src: logback.xml.j2
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/logback.xml"
+    mode: '555'
+  become: yes
+
+- name: Replace build artifact verticle configuration file
+  template:
+    src: "{{current_service_name}}/config.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/config.json"
+    mode: '555'
+  become: yes
+
+- name: Replace random on verticle snort-backend 
+  template:
+    src: "{{current_service_name}}/random"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/random"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "snort-alerts"
+ 
+- name: Replace empty on verticle snort-backend
+  template:
+    src: "{{current_service_name}}/empty"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/empty"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "snort-alerts"
+
+
+
+- name: Replace cpeClassifiers.json on verticle prediction  
+  template:
+    src: "{{current_service_name}}/cpeClassifiers.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/cpeClassifiers.json"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "prediction"
+ 
+- name: Replace demoThreatActorModels.json on verticle prediction 
+  template:
+    src: "{{current_service_name}}/demoThreatActorModels.json.j2"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/demoThreatActorModels.json"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "prediction"
+
+
+- name: Copy nvdcve-1.0-2019.meta to  verticle kb 
+  template:
+    src: "kb/nvdcve-1.0-2019.meta"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.meta"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "kb" or current_service_name == "kb-update"
+
+- name: copy nvdcve-1.0-2019.zib tp verticle kb 
+  copy:
+    src: "nvdcve-1.0-2019.json.zip"
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/conf/nvdcve-1.0-2019.json.zip"
+    mode: '555'
+  become: yes
+  when:  current_service_name == "kb" or current_service_name == "kb-update"
+
+- name: Replace build artifact start.sh file to enable running with java versions other thad adopt-open-jdk 12
+  copy:
+    src: start.sh
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/start.sh"
+    mode: '555'
+  become: yes
+  when: java_preinstalled == true
+
+- name: Replace build artifact start.sh file with adapted version for using manually installed java
+  template:
+    src: start.sh_java_manually_installed.j2
+    dest: "{{ current_service_location }}/{{ current_service_dir_name }}/start.sh"
+    mode: '555'
+  become: yes
+  when: java_preinstalled == false
+
+- name: Copy service file to /etc/systemd/system
+  template:
+    src: current.service.j2
+    dest: "/etc/systemd/system/{{ current_service_name }}.service"
+    mode: '755'
+  become: yes
+
+- name: reload service daemon
+  command: systemctl daemon-reload
+  become: yes
+
+- name: Start "{{ current_service_name }}" service
+  service:
+    name: "{{ current_service_name }}"
+    state: "started"
+    #enabled: yes
+  become: yes
+

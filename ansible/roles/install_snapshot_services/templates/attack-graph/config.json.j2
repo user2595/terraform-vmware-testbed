@@ -1,0 +1,21 @@
+{
+	"service" : {
+		"name" : "attack-graph",
+		"host" : "{{ ansible_user_ip }}",
+		"port" : 8795
+	},
+	"api-gateway" : {
+		"port": 8787,
+		"host": "{{ ansible_user_ip }}"
+	},
+	"metrics" : {
+		"enabled": true,
+		"metrics.port": 8908
+	},
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	}
+}

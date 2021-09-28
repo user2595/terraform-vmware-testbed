@@ -1,0 +1,25 @@
+---
+- name: Stop old artifact service
+  vars: 
+    service_name: "{{ current_service_name }}.service"
+  service:
+    name: "{{ current_service_name }}"
+    state: "stopped"
+  become: yes
+  when: ansible_facts.services[service_name] is defined
+
+- name: Delete service file
+  file:
+    path: "/etc/systemd/system/{{ current_service_name }}.service"
+    state: absent
+  become: yes
+
+- name: reload service daemon
+  command: systemctl daemon-reload
+  become: yes
+
+- name: Delete old artifact
+  file:
+    path: "{{ current_service_location }}/{{ current_service_dir_name }}"
+    state: absent
+  become: yes

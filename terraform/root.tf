@@ -45,17 +45,21 @@ data "vsphere_network" "out_attack" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 //currently  we have only one external network 
-# data "vsphere_network" "out_control" {
-#   name          = var.vsphere_out_control
-#   datacenter_id = data.vsphere_datacenter.dc.id
-# }
+data "vsphere_network" "out_control" {
+  name          = var.vsphere_out_control
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
 
 module "deployment" {
-  source                        = "./modules/experiment"
+  source                        = "./modules/deployment"
   config                        = local.config
-  experiment                    = local.experiment_0
-  
+  name                          = local.experiment_0_name
+  host                          = local.experiment_0_host
+  creat_attack_network          = local.experiment_0_creat_attack_network
+  creat_control_network         = local.experiment_0_creat_control_network
+  maschinen                     = local.experiment_0_maschinen
 }
+
 module "remote_ex" {
   depends_on                    = [ module.deployment ]
   source                        = "./modules/remote"

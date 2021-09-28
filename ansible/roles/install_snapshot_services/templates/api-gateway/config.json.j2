@@ -1,0 +1,31 @@
+{
+	"service": {
+		"host": "{{ ansible_user_ip }}",
+		"port": 8787,
+		"name": "api-gateway"
+	},
+	"metrics": {
+		"enabled": true,
+		"port": 8900
+	},
+	"ssl": {
+		"use": false
+	},
+	"access": {
+		"use": false
+	},
+	"forwarding": {
+		"active": true,
+		"forwardingList": {
+			"filter-vulnerability": "kb"
+		},
+	"extractRequestOnInactiveFilterForwardingServices": {
+		"kb": [
+			"/product",
+			"/products",
+			"/product/fast",
+			"/products/fast"
+		]
+	}
+	}
+}

@@ -1,5 +1,8 @@
 ---
-
+- name: Check if Java installation is present
+  stat:
+  path: "{{ java_location }}/{{ java_unpacked_folder_name }}"
+  register: java_installation_present
 
 - name: Create Log directory
   become: yes
@@ -8,12 +11,13 @@
     state: directory
     mode: 755 
     owner: "{{ansible_user_name}}"
+  when: java_installation_present.stat.exists  == False
 
-- name: Install python-apt
-  apt:
-    name: python-apt
-    state: present
 
+# - name: Install python-apt
+#   apt:
+#     name: python-apt
+#     state: present
 
 
 - name: install unzip tool on Ubuntu / Debian via apt
@@ -21,30 +25,39 @@
     name: unzip
     state: latest
   become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: 
+    - java_installation_present.stat.exists  == False
+    - ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: install unzip tool on ContOS / Red Hat
   yum:
     name: unzip
     state: latest
   become: true
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: 
+    - java_installation_present.stat.exists  == False
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Check if manual Java installation already present and set is_manual_java_present default value to false
   shell: "echo $(ls {{ java_location }} | grep {{ java_unpacked_folder_name }})"
   register: java_check_result
   no_log: true
+  when: java_installation_present.stat.exists == False
 
 - name: Set is_manual_java_present to true, if manual Java installation already present
   set_fact:
     is_manual_java_present: true
-  when: java_check_result.stdout != ""
+  when: 
+    - java_installation_present.stat.exists == False 
+    - java_check_result.stdout != ""
   no_log: true
 
 - name: Set is_manual_java_present to false, if manual Java installation is not present
   set_fact:
     is_manual_java_present: false
-  when: java_check_result.stdout == ""
+  when: 
+    - java_installation_present.stat.exists == False 
+    - java_check_result.stdout == ""
   no_log: true
 
 - name: Getting installed Java version
@@ -78,7 +91,9 @@
 - name: Java 11 or higher needed
   debug:
     msg: Java 11 or higher needs to be installed
-  when: java_preinstalled == false
+  when: 
+    - java_installation_present.stat.exists == False
+    - java_preinstalled == false
 
 - name: "Manually installing Java in needed version to {{ java_location }}/{{ java_unpacked_folder_name }}"
   unarchive:
@@ -87,12 +102,16 @@
     mode: '555'
     remote_src: yes
   become: true
-  when: (java_preinstalled == false) and (is_manual_java_present == false)
+  when: 
+    - java_installation_present.stat.exists == False
+    - (java_preinstalled == false) and (is_manual_java_present == false)
 
 - name: Remove manually installed Java, because needed Java was detected on another location
   file: 
     path: "{{ java_location }}/{{ java_unpacked_folder_name }}"
     state: absent
   become: true
-  when: (java_preinstalled == true) and (is_manual_java_present == true) and (whereis_java_result == "")
+  when: 
+    - java_installation_present.stat.exists == False
+    - (java_preinstalled == true) and (is_manual_java_present == true) and (whereis_java_result == "")
   

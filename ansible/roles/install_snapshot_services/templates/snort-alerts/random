@@ -1,0 +1,15 @@
+   [**] [1:634:2] SMB - suspicious port scan [**]
+    [Classification: Attempted User Privilege Gain] [Priority: 1] 
+    09/04/18-09:32:00.648222 195.168.2.8:45792 -> 195.168.1.4:45792
+    UDP TTL:47 TOS:0x0 ID:28555 IpLen:20 DgmLen:82
+    Len: 54
+    TCP Options (3) => NOP NOP TS: 2278226 22551791
+    [Xref => http://cve.mitre.org/cgi-bin/cvename.cgi?name=2017-0144]
+    
+    [**] [1:634:2] SMB - suspicious port scan [**]
+    [Classification: Attempted User Privilege Gain] [Priority: 1]·
+    09/04/18-09:32:00.648222 195.168.2.8:45792 -> 195.168.1.4:45792
+    UDP TTL:47 TOS:0x0 ID:28555 IpLen:20 DgmLen:82
+    Len: 54
+    TCP Options (3) => NOP NOP TS: 2278226 22551791
+    [Xref => http://cve.mitre.org/cgi-bin/cvename.cgi?name=2017-0144]

@@ -1,0 +1,19 @@
+{
+  "service": {
+    "name": "acs-extrusion-netflow-filter-dummy",
+    "host": "{{ ansible_user_ip }}",
+    "port": 8890
+  },
+  "api-gateway": {
+    "port": 80,
+    "host": "k8s-proxy.dai-lab.de",
+    "ingress-url": "/cosy/production-ehealth5g/api-gateway"
+  },
+  "serverAddresses": {
+    "port": 2055,
+    "host": "0.0.0.0"
+  },
+  "extrusionService": {
+    "name": "acs-extrusion-service-service"
+  }
+}

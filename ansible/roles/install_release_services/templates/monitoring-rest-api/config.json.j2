@@ -1,0 +1,41 @@
+{
+   "service":{
+      "name":"monitoring-rest-api",
+      "host":"{{ ansible_user_ip }}",
+      "port":8788
+   },
+   "kb-data":{
+      "service-name":"kb",
+      "endpoint":"/matching/packageList"
+   },
+   "api-gateway":{
+      "port":8787,
+      "host":"{{ ansible_user_ip }}"
+   },
+   "mtp":{
+      "mtp-service-name":"mtp",
+      "endpoint":"/update"
+   },
+   "metrics":{
+      "enabled":true,
+      "port":8901
+   },
+   "risk-report-service-name":"risk-rest-api",
+   "ssl":{
+      "use":false
+   },
+   "access":{
+      "use":false
+   },
+   "database":{
+      "class":"de.acs.monitoring.database.mongo.MongoNetworkPersister",
+      "host":"{{ ansible_user_ip }}",
+      "port":27017,
+      "name":"networks",
+      "collection":"monitoring_manager"
+   },
+   "matching":{
+      "use":false
+   },
+   "timeout":28800000
+}

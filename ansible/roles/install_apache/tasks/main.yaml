@@ -1,3 +1,9 @@
+---
+- name: Check if already installed
+  stat:
+    path: "/etc/apache2"
+  register: apache2
+
 - name: Install prerequisites
   apt: 
     name: "{{ item }}" 
@@ -6,6 +12,7 @@
     force_apt_get: yes
   loop: [ 'aptitude' ]
   become: yes
+  when: apache2.stat.exists == False
 
 - name: Install Apache
   apt: 
@@ -13,6 +20,8 @@
     update_cache: yes 
     state: latest
   become: yes
+  when: apache2.stat.exists == False
+
 
 - name: Create document root
   file:
@@ -21,35 +30,41 @@
     owner: "{{ ansible_user_name }}"
     mode: '0755'
   become: yes
-    
+  when: apache2.stat.exists == False
+
 - name: Copy index test page
   template:
     src: "files/index.html.j2"
     dest: "/var/www/{{ http_host }}/index.html"
   become: yes
-  
+  when: apache2.stat.exists == False
+
 - name: Set up Apache virtualhost
   template:
     src: "files/apache.conf.j2"
     dest: "/etc/apache2/sites-available/{{ http_conf }}"
   become: yes
+  when: apache2.stat.exists == False
 
 - name: Enable new Header 
   apache2_module:
     state: present
     name: headers
   become: yes 
+  when: apache2.stat.exists == False
 
 - name: Enable new site
   shell: /usr/sbin/a2ensite {{ http_conf }}
   become: yes
   notify: Reload Apache
+  when: apache2.stat.exists == False
 
 - name: Disable default Apache site
   shell: /usr/sbin/a2dissite 000-default.conf
   become: yes
   when: disable_default
   notify: Reload Apache
+  when: apache2.stat.exists == False
 
 - name: "UFW - Allow HTTP on port {{ http_port }}"
   ufw:
@@ -58,7 +73,7 @@
     proto: tcp
   become: yes
   notify: Restart Apache
-
+  when: apache2.stat.exists == False
 
     
 
