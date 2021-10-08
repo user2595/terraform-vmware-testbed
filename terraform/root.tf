@@ -16,10 +16,10 @@ data "ansiblevault_path" "vmware_user_password" {
   key= var.vsphere_user
 }
 provider "vsphere" {
-  user           = var.vsphere_user
-  password       = data.ansiblevault_path.vmware_user_password.value
-  vsphere_server = var.vsphere_server
-  
+  user            = var.vsphere_user
+  password        = data.ansiblevault_path.vmware_user_password.value
+  vsphere_server  = var.vsphere_server
+  version         = "1.12.0" 
   # If you have a self-signed cert
   allow_unverified_ssl = var.vsphere_unverified_ssl
   #solve ServerFaultCode: Request version 'urn:pbm/' and namespace 'urn:pbm' are not supported
@@ -60,11 +60,11 @@ module "deployment" {
   maschinen                     = local.experiment_0_maschinen
 }
 
-module "remote_ex" {
-  depends_on                    = [ module.deployment ]
-  source                        = "./modules/remote"
-  config                        = local.config
-  deployment_out_ip_list        = module.deployment.ip_list
-  deployment_out_username_list  = module.deployment.username_list
-}
+#module "remote_ex" {
+#  depends_on                    = [ module.deployment ]
+#  source                        = "./modules/remote"
+#  config                        = local.config
+#  deployment_out_ip_list        = module.deployment.ip_list
+#  deployment_out_username_list  = module.deployment.username_list
+#}
 

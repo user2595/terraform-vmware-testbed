@@ -5,7 +5,7 @@ variable "vsphere_user"                         {default= "secAdmin"}
 variable "vsphere_server"                       {default="vcenter.dai-lab.de"}
 # If you have a self-signed cert
 variable "vsphere_unverified_ssl"               {default= true }
-variable "vsphere_version"                      {default= "1.15.0"} 
+variable "vsphere_version"                      {default= "1.12.0"} 
 ##########################################################################
 ############ Ansible_Vault ###############################################
 ##########################################################################
@@ -30,7 +30,7 @@ variable "vsphere_out_control"                  {default= "SEC_Testbed_Uplink" }
 variable "template_dhcp"                        {default = "sec-dhcp"}
 variable "template_attacker"                    {default = "kaliVM"} 
 variable "template_control"                     {default = "controlvm"}  
-variable "template_MinUv2"                      {default = "MinUv2-Modify"} 
+variable "template_MinUv2"                      {default = "MinUv2-modify"} 
 variable "template_MinUv1"                      {default = "MinUv1"} 
 variable "template_linux"                       {default = "linux"} 
 variable "template_securtiyOnion"               {default = "securtiyOnion"} 
@@ -80,53 +80,62 @@ locals {
     out_control         = data.vsphere_network.out_control.id    
   }
   
-  experiment_0_name                  = "experiment_1"
+  experiment_0_name                  = "bachelor_thesis_kowallik"
   experiment_0_host                  = "vsphere12.dai-lab.de"
-  experiment_0_creat_attack_network  = false
-  experiment_0_creat_control_network = false
+  experiment_0_creat_attack_network  = true
+  experiment_0_creat_control_network = true
                  
   experiment_0_maschinen = [
-# {
-#   template = var.template_dhcp
-#   username = var.linux_username
-#   out_attack = false
-#   out_control = false
-#   attack_network = true
-#   control_network = true
-#   network_waiter = false
-#   use_static_mac = true
-
-# },
+ {
+   template = var.template_dhcp
+   username = var.linux_username
+   out_attack = false
+   out_control = false
+   attack_network = true
+   control_network = true
+   network_waiter = false
+   use_static_mac = true
+ },
 # {
 #   template = var.template_attacker
 #   username = var.kali_username
 #   out_attack = true
 #   out_control = false
-#   attack_network = true
-#   control_network = false
+#   attack_network = false
+#   control_network = true
 #   network_waiter = true
 #   use_static_mac = true
 # },
 {
-  template = var.template_control
+  template = var.template_linux
   username = var.linux_username
   out_attack = false
   out_control = true
   attack_network = false
-  control_network = false
+  control_network = true
   network_waiter = true
    use_static_mac = true
  },
-# {
-#   template = var.template_MinUv2
-#   username = null
-#   out_attack = false
-#   out_control = false
-#   attack_network = true
-#   control_network = true
-#   network_waiter = false
-#   use_static_mac = true
-#   },
+ {
+  template = var.template_linux
+  username = var.linux_username
+  out_attack = false
+  out_control = true
+  attack_network = false
+  control_network = true
+  network_waiter = true
+   use_static_mac = true
+ },
+ {
+   template = var.template_MinUv2
+   username = null
+   out_attack = false
+   out_control = true
+   attack_network = false
+   control_network = true
+   network_waiter = false
+   use_static_mac = true
+  }#,
 # {
 #   template = var.template_MinUv1
 #   out_attack = false
@@ -135,7 +144,8 @@ locals {
 #   control_network = true
 #   network_waiter = false
 #   use_static_mac = false
-# },{  
+# },
+# {  
 #   template = var.template_linux
 #   username = var.linux_username
 #   out_attack = false
